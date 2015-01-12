@@ -1,0 +1,718 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-01-12 16:36+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Gilletarom <contact@gilletarom.fr>\n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.3\n"
+#
+msgid " "
+msgstr ""
+#
+msgid "  HW"
+msgstr ""
+#
+msgid "  LW"
+msgstr ""
+#
+#, c-format
+msgid " width = %d height = %d\n"
+msgstr ""
+#
+#, c-format
+msgid " x = %d y = %d\n"
+msgstr ""
+#
+#, fuzzy
+msgid "Cancel"
+msgstr ""
+"Complément\n"
+"nécessaire"
+#
+msgid "General settings"
+msgstr "Réglage"
+#
+msgid "Graph"
+msgstr ""
+#
+#, fuzzy
+msgid "HW"
+msgstr "O"
+#
+#, fuzzy
+msgid "LW"
+msgstr "O"
+#
+msgid "Next"
+msgstr ""
+#
+msgid "OK"
+msgstr ""
+#
+msgid "Prev"
+msgstr ""
+#
+msgid "Select Date"
+msgstr ""
+#
+msgid "Select the date for Tides"
+msgstr ""
+#
+msgid "Select your Port"
+msgstr ""
+#
+#, fuzzy
+msgid "Speed"
+msgstr "Vitesse :"
+#
+msgid "Tide Finder"
+msgstr ""
+#
+msgid "Tide Finder Position"
+msgstr ""
+#
+msgid "TideFinder"
+msgstr ""
+#
+msgid "TideFinder Interval"
+msgstr ""
+#
+#, fuzzy
+msgid "TideFinder preferences"
+msgstr "Préférences"
+#
+msgid "Today"
+msgstr ""
+#
+msgid "Tomorrow"
+msgstr ""
+#
+#
+#~ msgid "\r\n"
+#~ msgstr "\r\n"
+#
+#
+#~ msgid "\""
+#~ msgstr "\""
+#
+#
+#~ msgid "\"No\""
+#~ msgstr "\"Non\""
+#
+#
+#~ msgid "'"
+#~ msgstr "'"
+#
+#
+#~ msgid "*.*"
+#~ msgstr "*.*"
+#
+#
+#~ msgid "/PlugIns/ROUTE"
+#~ msgstr "/PlugIns/ROUTE"
+#
+#
+#~ msgid "1"
+#~ msgstr "1"
+#
+#
+#~ msgid "2"
+#~ msgstr "2"
+#
+#
+#~ msgid "Actuell"
+#~ msgstr ""
+#~ "Stock\n"
+#~ "actuel"
+#
+#
+#~ msgid "Add Line"
+#~ msgstr "Ajouter une ligne"
+#
+#
+#~ msgid ""
+#~ "Append a row\n"
+#~ "Delete a row = Key <Del>"
+#~ msgstr ""
+#~ "Ajouter une ligne\n"
+#~ "Supprimer une ligne = Touche <Del>"
+#
+#
+#~ msgid "Approach course"
+#~ msgstr "Cap de recherche"
+#
+#
+#~ msgid "Approach course     "
+#~ msgstr "Cap de recherche"
+#
+#
+#~ msgid "Brent's method not converging, check result"
+#~ msgstr "Brent's method not converging, check result"
+#
+#
+#~ msgid "Buy"
+#~ msgstr "Acheter"
+#
+#
+#~ msgid "Buy it"
+#~ msgstr "Acheter ceci"
+#
+#
+#~ msgid "C"
+#~ msgstr "C"
+#
+#
+#~ msgid "CPU saving settings"
+#~ msgstr "Sauvegarde des réglages"
+#
+#
+#~ msgid "Calculate"
+#~ msgstr "Calculer"
+#
+#
+#~ msgid "Capture Cursor Position"
+#~ msgstr "Capture de la position du curseur"
+#
+#
+#~ msgid "Capture Ship Position"
+#~ msgstr "Capture de la position du bateau"
+#
+#
+#~ msgid "Choose a file"
+#~ msgstr "Choisir un fichier"
+#
+#
+#~ msgid "Convert to Degree"
+#~ msgstr "Convertir en degré"
+#
+#
+#~ msgid "Copy ship position (GPS fix required)"
+#~ msgstr "Copier la position du bateau (Le GPS doit avoir fait sont \"fixe\")"
+#
+#
+#, fuzzy
+#~ msgid ""
+#~ "Creates GPX files with\n"
+#~ "Search and resque patterns."
+#~ msgstr ""
+#~ "Creates GPX files with\n"
+#~ "Search and resque patterns."
+#
+#
+#~ msgid "Cursor"
+#~ msgstr "Curseur"
+#
+#
+#~ msgid "DILG1"
+#~ msgstr "DILG1"
+#
+#
+#~ msgid "Dashboard"
+#~ msgstr "Tableau de bord"
+#
+#
+#~ msgid "Datum (Start of Search)"
+#~ msgstr "Position du bateau : Point initial de recherche"
+#
+#
+#~ msgid "Decimal Degree"
+#~ msgstr "Degré décimal"
+#
+#
+#~ msgid "Degrees"
+#~ msgstr "Degrés"
+#
+#
+#~ msgid "E"
+#~ msgstr "E"
+#
+#
+#~ msgid "End     "
+#~ msgstr "Fin"
+#
+#
+#~ msgid "End of Route"
+#~ msgstr "Fin de la route"
+#
+#
+#~ msgid "Enter Searchstring:"
+#~ msgstr "Entrer le texte cherché :"
+#
+#
+#~ msgid "Error in calculation. Please check input!"
+#~ msgstr "Erreur dans le calcul. Vérifiez vos entrées."
+#
+#
+#~ msgid "Error occured, aborting SAR calc!"
+#~ msgstr "Une erreur s'est produite. Calcul avorté."
+#
+#
+#~ msgid ""
+#~ "Expanding Square\n"
+#~ "         Search"
+#~ msgstr ""
+#~ "Recherche selon des carrés imbriqués\n"
+#~ "     "
+#
+#
+#~ msgid "Export"
+#~ msgstr "Exporter"
+#
+#
+#~ msgid "Export Great Circle GPX file as"
+#~ msgstr "Exporter la route orthodromique comme un fichier GPX"
+#
+#
+#~ msgid "Export Rhumb Line GPX file as"
+#~ msgstr "Exporter la route loxodromique comme un fichier GPX"
+#
+#
+#~ msgid "Export SAR track GPX file as"
+#~ msgstr "Exporter la trace de la recherche comme un fichier GPX"
+#
+#
+#~ msgid "FindIt"
+#~ msgstr "FindIt"
+#
+#
+#~ msgid "FindIt Options"
+#~ msgstr "Options du FindIt"
+#
+#
+#~ msgid "For Ship Number      "
+#~ msgstr "Pour le bateau numéro"
+#
+#
+#~ msgid "Generate &GPX"
+#~ msgstr "Générer un fichier GPX"
+#
+#
+#~ msgid "Great Circle"
+#~ msgstr "Routes directes"
+#
+#
+#~ msgid ""
+#~ "Great Circle\n"
+#~ "Route"
+#~ msgstr ""
+#~ "Routes naturelles\n"
+#~ " "
+#
+#
+#~ msgid ""
+#~ "Great Circle     \n"
+#~ "Distance"
+#~ msgstr ""
+#~ "Orthodromie   \n"
+#~ "Longueur"
+#
+#
+#~ msgid "Great Circle (shortest) GPX"
+#~ msgstr "Orthodromie (Plus courte)   ---> GPX"
+#
+#
+#~ msgid "If Value of Column \"Balance\" = 0, set Value to"
+#~ msgstr "Si valeur de la colonne \"à acheter\"= 0, écrire"
+#
+#
+#~ msgid "If Value of Column \"Buy\" = No, set Value to"
+#~ msgstr "Si la valeur de la colonne \"Acheter\"= Non, écrire"
+#
+#
+#~ msgid ""
+#~ "If the logbook-plugin is installed send a list\n"
+#~ "with checked items to 'Logbook/Maintenace/Buy Parts'"
+#~ msgstr ""
+#~ "Si le complément \"Journal de bord\" est installé, transférer une liste\n"
+#~ "avec les articles cochés à 'Livre de bord / Maintenance / Pièces achetées''"
+#
+#
+#~ msgid ""
+#~ "In order to copy the cursor location, select either the Lattitude or "
+#~ "Longitude coordinate box, and press <CTRL>+S."
+#~ msgstr ""
+#~ "Pour copier la position du curseur, sélectionner la latitude et la "
+#~ "longitude dans la boite des coordonnées, et appuyer sur la combinaison de "
+#~ "touches \"Ctrl\"  et \"S\" du clavier"
+#
+#
+#~ msgid "Input"
+#~ msgstr "Entrée"
+#
+#
+#~ msgid "InputFilename"
+#~ msgstr "Nom de fichier source"
+#
+#
+#~ msgid "Interval"
+#~ msgstr "Intervalle"
+#
+#
+#~ msgid "Lat "
+#~ msgstr "Lat."
+#
+#
+#~ msgid ""
+#~ "Latitude  \n"
+#~ "Limit"
+#~ msgstr ""
+#~ "Latitude   \n"
+#~ "Limite"
+#
+#
+#~ msgid "Lattitude  "
+#~ msgstr "Latitude"
+#
+#
+#~ msgid "Leave ticked, so that you can use cursor position."
+#~ msgstr "Leave ticked, so that you can use cursor position."
+#
+#
+#~ msgid "Leave ticked, so you can use ship's position"
+#~ msgstr "Leave ticked, so you can use ship's position"
+#
+#
+#~ msgid "Leg Distance          "
+#~ msgstr "Longueur du segment"
+#
+#
+#~ msgid "Leg Distance              "
+#~ msgstr "Longueur du segment"
+#
+#
+#~ msgid "Leg Distance               "
+#~ msgstr "Longueur du segment"
+#
+#
+#~ msgid "Leg Spacing                "
+#~ msgstr "Distance entre segments"
+#
+#
+#~ msgid "Limited Circle"
+#~ msgstr "Route limitée"
+#
+#
+#~ msgid ""
+#~ "Limited Circle\n"
+#~ "Distance"
+#~ msgstr ""
+#~ "Route limitée\n"
+#~ "Longueur"
+#
+#
+#~ msgid ""
+#~ "Limited Circle\n"
+#~ "Route"
+#~ msgstr ""
+#~ "Route limitée\n"
+#~ "(en latitude N ou S)"
+#
+#
+#~ msgid "Limited Circle GPX"
+#~ msgstr "Route avec limite ---> GPX"
+#
+#
+#~ msgid "Location"
+#~ msgstr "Emplacement"
+#
+#
+#~ msgid "Locations"
+#~ msgstr "Emplacement"
+#
+#
+#~ msgid "Lon"
+#~ msgstr "Lon"
+#
+#
+#~ msgid "Longitude"
+#~ msgstr "Longitude"
+#
+#
+#~ msgid "Material"
+#~ msgstr "Matériel"
+#
+#
+#~ msgid "Menu"
+#~ msgstr "Menu"
+#
+#
+#~ msgid "N"
+#~ msgstr "N"
+#
+#
+#~ msgid "NM"
+#~ msgstr "NM"
+#
+#
+#~ msgid "Naming"
+#~ msgstr "Nom"
+#
+#
+#~ msgid "No Lat Limit!"
+#~ msgstr "Pas de limite de latitude"
+#
+#
+#~ msgid "Number of Legs   "
+#~ msgstr "Nombre de segments"
+#
+#
+#~ msgid "Number of Legs       "
+#~ msgstr "Nombres de segments"
+#
+#
+#~ msgid "Number of Squares"
+#~ msgstr "Nombre de carrés"
+#
+#
+#~ msgid "Number of cycles"
+#~ msgstr "Nombre de cycles"
+#
+#
+#~ msgid "Oil Rig Search"
+#~ msgstr "Recherche dans un secteur angulaire"
+#
+#
+#~ msgid "Opacity"
+#~ msgstr "Opacité"
+#
+#
+#~ msgid "OutputFilename"
+#~ msgstr "Nom de fichier but"
+#
+#
+#~ msgid "Parallel Search"
+#~ msgstr "Recherche par segments parallèles"
+#
+#
+#~ msgid "Preferences"
+#~ msgstr "Préférences"
+#
+#
+#~ msgid "Priority"
+#~ msgstr "Priorité"
+#
+#
+#~ msgid "Progress:"
+#~ msgstr "Progression :"
+#
+#
+#~ msgid "Provisions"
+#~ msgstr "Provisions"
+#
+#
+#~ msgid "Quota"
+#~ msgstr ""
+#~ "Stock\n"
+#~ "nécessaire"
+#
+#
+#~ msgid "ROUTE"
+#~ msgstr "Route"
+#
+#
+#~ msgid "ROUTE replay"
+#~ msgstr "Refaire un route"
+#
+#
+#~ msgid "Results"
+#~ msgstr "Résultats"
+#
+#
+#~ msgid ""
+#~ "Rhumb Line\n"
+#~ "Distance"
+#~ msgstr ""
+#~ "Loxodromie\n"
+#~ "Longueur"
+#
+#
+#~ msgid ""
+#~ "Rhumb Line     \n"
+#~ "Distance"
+#~ msgstr ""
+#~ "Loxodromie   \n"
+#~ "Longueur"
+#
+#
+#~ msgid "Rhumb Line (fixed heading) GPX"
+#~ msgstr "Loxodromie (Cap constant) ---> GPX"
+#
+#
+#~ msgid "Route"
+#~ msgstr "Route"
+#
+#
+#~ msgid "Route Plotting plugin for OpenCPN"
+#~ msgstr "Complément \"Créateur de routes pour openCPN\""
+#
+#
+#~ msgid ""
+#~ "Route Plotting plugin for OpenCPN\n"
+#~ "Plots Great Circle routes, Limited Circle Routes and Rhumb lines."
+#~ msgstr ""
+#~ "Complément pour OpenCPN : Créateur de routes\n"
+#~ "Créateur de routes orthodromiques, de routes loxodromiques et de routes "
+#~ "limitées en latitude."
+#
+#
+#~ msgid "Route Preferences"
+#~ msgstr "Préférences de la routes"
+#
+#
+#~ msgid "S"
+#~ msgstr "S"
+#
+#
+#~ msgid "SAR"
+#~ msgstr "SAR"
+#
+#
+#~ msgid "SAR Plugin by SaltyPaws"
+#~ msgstr "Complément \"SAR\" par Salty Paws"
+#
+#
+#~ msgid "SAR: Expanding Square"
+#~ msgstr "SAR : Par carrés imbriqués"
+#
+#
+#~ msgid "SAR: Oil Rig"
+#~ msgstr "SAR: Dans un secteur angulaire"
+#
+#
+#~ msgid "SAR: Sector Search"
+#~ msgstr "SAR : Par zones triangulaires"
+#
+#
+#~ msgid "SAR: Trackline"
+#~ msgstr "SAR : Par segments parallèles"
+#
+#
+#~ msgid "Search Distance"
+#~ msgstr "Longueur de la recherche"
+#
+#
+#~ msgid "Search Pattern name for GPX file"
+#~ msgstr "Search Pattern name for GPX file"
+#
+#
+#~ msgid "Search Speed        "
+#~ msgstr "Vitesse de recherche"
+#
+#
+#~ msgid "Search Speed         "
+#~ msgstr "vitesse de recherche"
+#
+#
+#~ msgid "Search Speed             "
+#~ msgstr "Vitesse de recherche"
+#
+#
+#~ msgid "Search Time        "
+#~ msgstr "Durée de la recherche"
+#
+#
+#, fuzzy
+#~ msgid "Search and Resque Patterns"
+#~ msgstr "Search and Resque Patterns"
+#
+#
+#~ msgid "Sector Search"
+#~ msgstr "Recherche par zones triangulaires"
+#
+#
+#~ msgid "Separate more than one string with a blank"
+#~ msgstr "Separer chaque mot cherché par un espace"
+#
+#
+#~ msgid "Ship"
+#~ msgstr "Bateau"
+#
+#
+#~ msgid "Show FindIt Icon"
+#~ msgstr "Afficher l'icône du complément FindIt"
+#
+#
+#~ msgid "Start  "
+#~ msgstr "Début"
+#
+#
+#~ msgid "Start Latitude>Limit!"
+#~ msgstr "Latitude de début > Latitude limite"
+#
+#
+#~ msgid "Start of Route"
+#~ msgstr "Début de la route"
+#
+#
+#~ msgid "Stowage PlugIn for OpenCPN\n"
+#~ msgstr "Complément \"Gestionnaire d'organisation interne\"\n"
+#
+#
+#~ msgid "Text"
+#~ msgstr "Texte"
+#
+#
+#~ msgid "To Buy"
+#~ msgstr "A acheter"
+#
+#
+#~ msgid "Unit"
+#~ msgstr "Unité"
+#
+#
+#~ msgid "Units"
+#~ msgstr "Unités"
+#
+#
+#~ msgid "Use last row values  as default for new row"
+#~ msgstr "Dupliquer la ligne précédente"
+#
+#
+#~ msgid ""
+#~ "Waypoint\n"
+#~ "Distance"
+#~ msgstr ""
+#~ "Distance entre\n"
+#~ "waypoint"
+#
+#
+#~ msgid "Yes"
+#~ msgstr "Oui"
+#
+#
+#~ msgid "\\u00b0"
+#~ msgstr "\\u00b0"
+#
+#
+#~ msgid "\\u00b0 ' \""
+#~ msgstr "\\u00b0 ' \""
+#
+#
+#~ msgid "blank"
+#~ msgstr "Blanc"
+#
+#
+#~ msgid "error in input range validation"
+#~ msgstr "Erreur de validation de données entrées"
+#
+#
+#~ msgid "hr"
+#~ msgstr "hr"
+#
+#
+#~ msgid "kts"
+#~ msgstr "Noeuds"
+#
+#
+#~ msgid "n"
+#~ msgstr "n"
+#
+#
+#~ msgid "opencpn-route_pi"
+#~ msgstr "opencpn-route_pi"
