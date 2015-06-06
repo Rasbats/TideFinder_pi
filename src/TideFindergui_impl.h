@@ -47,8 +47,8 @@
 #include <wx/listctrl.h>
 #include <list>
 #include <vector>
-#include "resource.h"
-#include "TC_Error_Code.h"
+//#include "resource.h"
+//#include "TC_Error_Code.h"
 #include "tcmgr.h"
 #include <wx/choice.h>
 #include <vector>

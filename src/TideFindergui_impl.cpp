@@ -159,8 +159,9 @@ Dlg::Dlg( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint&
 }
 
 void Dlg::OnClose(wxCloseEvent& event)
-{	
-	DeleteSingleWaypoint(_T("T") + m_PortNo);
+{
+	wxString to_delete = _T("T") + m_PortNo;
+	DeleteSingleWaypoint( to_delete );
 	plugin->OnTideFinderDialogClose();
 }
 
