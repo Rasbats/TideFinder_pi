@@ -190,7 +190,7 @@ void Dlg::OnContextMenu(double m_lat, double m_lon){
 	wxString exPort = wxT("");
 		
 	wxListItem     row_info;  
-	wxString       cell_contents_string = _("");
+	wxString       cell_contents_string = wxEmptyString;
 
 	double lat = 50;
 	double lon = -4;

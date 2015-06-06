@@ -184,12 +184,12 @@ wxString TideFinder_pi::GetCommonName()
 
 wxString TideFinder_pi::GetShortDescription()
 {
-      return _("");
+      return wxEmptyString;
 }
 
 wxString TideFinder_pi::GetLongDescription()
 {
-      return _("");
+      return wxEmptyString;
 }
 
 int TideFinder_pi::GetToolbarToolCount(void)
