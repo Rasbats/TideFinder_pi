@@ -37,7 +37,7 @@
 #include "TideFinder_pi.h"
 #include "NavFunc.h"
 #include "tinyxml.h"
-#include "bbox.h"
+//#include "bbox.h"
 #include "wx/math.h"
 #include "wx/dialog.h"
 #include <wx/calctrl.h>
