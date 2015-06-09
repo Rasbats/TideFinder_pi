@@ -448,7 +448,11 @@ void TCWin::OnPaint( wxPaintEvent& event )
                 dc.SetPen( *pblack_1 );
 
             dc.DrawLine( m_graph_rect.x, yd, m_graph_rect.x + m_graph_rect.width, yd );
+#ifdef __WXMSW__
             _snprintf( sbuf, 99, "%d", i );
+#else
+            snprintf( sbuf, 99, "%d", i );
+#endif
             dc.DrawText( wxString( sbuf, wxConvUTF8 ), m_graph_rect.x - 20, yd - 5 );
             i += i_skip;
 
