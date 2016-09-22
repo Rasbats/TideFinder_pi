@@ -24,7 +24,7 @@ DlgDef::DlgDef( wxWindow* parent, wxWindowID id, const wxString& title, const wx
 	wxBoxSizer* bSizer1311;
 	bSizer1311 = new wxBoxSizer( wxVERTICAL );
 
-	m_staticText2 = new wxStaticText( this, wxID_ANY, wxT("Use Right-Click in the location for tide prediction"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText2 = new wxStaticText( this, wxID_ANY, wxT("Right-Click in the location for tide prediction\n ... and click \'Tide Finder Position\' from the menu.\n\n DO NOT close this box!!!"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText2->Wrap( -1 );
 	
 	wxFont *pTCFont2;

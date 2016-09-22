@@ -37,18 +37,15 @@
 #include "TideFinder_pi.h"
 #include "NavFunc.h"
 #include "tinyxml.h"
-//#include "bbox.h"
 #include "wx/math.h"
 #include "wx/dialog.h"
 #include <wx/calctrl.h>
 #include "wx/window.h"
-#include "timectrl.h"
+#include <wx/timectrl.h>
 #include "TCWin.h"
 #include <wx/listctrl.h>
 #include <list>
 #include <vector>
-//#include "resource.h"
-//#include "TC_Error_Code.h"
 #include "tcmgr.h"
 #include <wx/choice.h>
 #include <vector>
@@ -246,11 +243,10 @@ public:
 	wxCalendarCtrl* dialogCalendar; 
 
 	wxStaticText *m_staticText; 
-	wxTimeTextCtrl *_timeText;
-	wxSpinButton *_spinCtrl;
+	wxTimePickerCtrl *_timeCtrl;
+	
 	wxString GetText();
-    void spinUp(wxSpinEvent& event);
-	void spinDown(wxSpinEvent& event);
+
 private:
  
 	void OnOk( wxCommandEvent & event );

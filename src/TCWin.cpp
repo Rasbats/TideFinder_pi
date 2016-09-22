@@ -120,7 +120,15 @@ TCWin::TCWin( wxWindow * parent, int x, int y, int PortNo, wxString PortName, in
     wxTimeSpan diff = this_gmt.Subtract ( this_now );
 #endif
 
-    int diff_mins = diff.GetMinutes();
+	int diff_mins = diff.GetMinutes();
+	
+	//  Correct a bug in wx3.0.2
+	//  If the system TZ happens to be GMT, with DST active (e.g.summer in London),
+	//  then wxDateTime returns incorrect results for toGMT() method
+#if wxCHECK_VERSION(3, 0, 2)
+	if (diff_mins == 0 && this_now.IsDST())
+		diff_mins += 60;
+#endif
 
     int station_offset = 0;
 
@@ -133,7 +141,7 @@ TCWin::TCWin( wxWindow * parent, int x, int y, int PortNo, wxString PortName, in
 
     wxString* TClist = NULL;
     m_tList = new wxListBox( this, -1, wxPoint( sx * 65 / 100, 11 ),
-                             wxSize( ( sx * 32 / 100 ), ( sy * 20 / 100 ) ), 0, TClist,
+                             wxSize( ( sx * 30 / 100 ), ( sy * 20 / 100 ) ), 0, TClist,
                              wxLB_SINGLE | wxLB_NEEDED_SB );
 
     OK_button = new wxButton( this, wxID_OK, _( "OK" ), wxPoint( sx - 100, sy - 32 ),
@@ -143,7 +151,7 @@ TCWin::TCWin( wxWindow * parent, int x, int y, int PortNo, wxString PortName, in
                               wxSize( 60, -1 ) );
 
     m_ptextctrl = new wxStaticText( this, -1, _T(""), wxPoint( sx * 5 / 100, 30 ),
-                                  wxSize( ( sx * 60 / 100 ), ( sy *29 / 100 ) ) ,
+                                  wxSize( ( sx * 55 / 100 ), ( sy *20 / 100 ) ) ,
                                   wxALIGN_CENTRE);
     int bsx, bsy, bpx, bpy;
     PR_button->GetSize( &bsx, &bsy );

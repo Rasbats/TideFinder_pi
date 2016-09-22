@@ -308,7 +308,7 @@ void Dlg::OnContextMenu(double m_lat, double m_lon){
 			   GF_button->Hide();
 			   m_listBox1->Hide();
 			   m_staticText3->Hide();
-			   m_staticText2->SetLabel( wxT("Use Right-Click in the location for tide prediction") );
+			   m_staticText2->SetLabel(wxT("Right-Click in the location for tide prediction\n ... and click \'Tide Finder Position\' from the menu.\n\n DO NOT close this box!!!"));
 			   this->Refresh();
 			   this->Fit();
 		 }
@@ -388,10 +388,13 @@ void Dlg::OnContextMenu(double m_lat, double m_lon){
 			   this->Refresh();
 			   this->Fit();
 		  }
-		  else{
+		  else{			   
+               wxMessageBox(wxT("No port selected\n ...Right-click to select again"), _T("Port not selected"));
+			   m_listBox1->Hide();
+			   m_staticText3->Hide();
+			   m_staticText2->SetLabel(_T("Right-click to select again ..."));
 			   this->Refresh();
 			   this->Fit();
-               wxMessageBox(wxT("No Port Selected"), _T("No Selection"));
 		   }
 
 	}
@@ -455,38 +458,43 @@ void Dlg::LoadHarmonics()
 }
 
 void Dlg::OnCalculate(){
+
+	pIDX = ptcmgr->GetIDX_entry(intPortNo);
 	
 	//    Figure out this computer timezone minute offset
-    wxDateTime this_now = wxDateTime::Now();
-    wxDateTime this_gmt = this_now.ToGMT();
-	 
+	wxDateTime this_now = wxDateTime::Now();
+	wxDateTime this_gmt = this_now.ToGMT();
+
 #if wxCHECK_VERSION(2, 6, 2)
-    wxTimeSpan diff = this_now.Subtract( this_gmt );
+	wxTimeSpan diff = this_now.Subtract(this_gmt);
 #else
-    wxTimeSpan diff = this_gmt.Subtract ( this_now );
+	wxTimeSpan diff = this_gmt.Subtract(this_now);
 #endif
 
-    int diff_mins = diff.GetMinutes();
+	int diff_mins = diff.GetMinutes();
 
-    int station_offset = 0;
+	//  Correct a bug in wx3.0.2
+	//  If the system TZ happens to be GMT, with DST active (e.g.summer in London),
+	//  then wxDateTime returns incorrect results for toGMT() method
+#if wxCHECK_VERSION(3, 0, 2)
+	if (diff_mins == 0 && this_now.IsDST())
+		diff_mins += 60;
+#endif
+	int station_offset = ptcmgr->GetStationTimeOffset(pIDX);
 
-    m_corr_mins = station_offset - diff_mins;
-    if( this_now.IsDST() ) m_corr_mins += 60;
-	
-if (btc_valid){
+	m_corr_mins = station_offset - diff_mins;
+	if (this_now.IsDST()) m_corr_mins += 60;
 
-//    Establish the inital drawing day as today
+	//    Establish the inital drawing day as today
 	m_graphday = wxDateTime::Now();
-    wxDateTime graphday_00 = wxDateTime::Today();
-    time_t t_graphday_00 = graphday_00.GetTicks();
+	wxDateTime graphday_00 = wxDateTime::Today();
+	time_t t_graphday_00 = graphday_00.GetTicks();
 
-    //    Correct a Bug in wxWidgets time support
-    if( !graphday_00.IsDST() && m_graphday.IsDST() ) t_graphday_00 -= 3600;
-    if( graphday_00.IsDST() && !m_graphday.IsDST() ) t_graphday_00 += 3600;
+	//    Correct a Bug in wxWidgets time support
+	if (!graphday_00.IsDST() && m_graphday.IsDST()) t_graphday_00 -= 3600;
+	if (graphday_00.IsDST() && !m_graphday.IsDST()) t_graphday_00 += 3600;
 
-    m_t_graphday_00_at_station = t_graphday_00 - ( m_corr_mins * 60 );
-
-	}
+	m_t_graphday_00_at_station = t_graphday_00 - (m_corr_mins * 60);
 
 	int d = m_graphday.GetDayOfYear();
 	wxString MyDay = wxString::Format(wxT("%d"),(int) d); // For harmonics Table 7
@@ -516,7 +524,6 @@ void Dlg::CalcHWLW(int PortCode)
 
 		m_PortNo = wxString::Format(wxT("%i"),PortCode);
 
-		pIDX = ptcmgr->GetIDX_entry ( PortCode );
 		float dir;
 		
 		int i, c, n, e;
@@ -703,45 +710,27 @@ void Dlg::OnCalendarShow( wxCommandEvent& event )
 {	
 
 	CalendarDialog CalDialog ( this, -1, _("Select the date for Tides"),
-	                          wxPoint(100, 100), wxSize(200, 250) );
+	                          wxPoint(100, 100), wxSize(240, 250) );	
+
 	if ( CalDialog.ShowModal() == wxID_OK ){
 				
-		wxString myTime = CalDialog._timeText->GetValue();
-        wxString val = myTime.Mid(0,1);
+		wxDateTime this_now = wxDateTime::Now();
 
-		if ( val == wxT(" ")){
-			myTime = wxT("0") + myTime.Mid(1,5);
-		}
+		wxString todayHours = this_now.Format(_T("%H"));
+		wxString todayMinutes = this_now.Format(_T("%M"));
 
-		wxDateTime dt;
-		dt.ParseTime(myTime);
-		
-		wxString todayHours = dt.Format(_T("%H"));
-		wxString todayMinutes = dt.Format(_T("%M"));
-	
 		double h;
 		double m;
 
 		todayHours.ToDouble(&h);
 		todayMinutes.ToDouble(&m);
-		myTimeOfDay = wxTimeSpan(h,m,0,0);	
+		wxTimeSpan myTimeOfDay = wxTimeSpan(h, m, 0, 0);
 
-		wxDateTime dm = CalDialog.dialogCalendar->GetDate();
-		wxDateTime yn = wxDateTime::Now();
-		int mdm = dm.GetYear();
-		int myn = yn.GetYear();
-		if(mdm != myn){
-		wxMessageBox(wxT("Sorry, only the current year will work!"),wxT("Out of current year"));
-		dm = yn;
-		}
-		
+		wxDateTime dm = CalDialog.dialogCalendar->GetDate();		
 
-		m_graphday = dm + myTimeOfDay;
+		m_graphday = dm.Add(myTimeOfDay);
 
 		wxDateTime graphday_00 = dm.ResetTime();
-
-		if(graphday_00.GetYear() == 2013)
-			int yyp = 4;
 
 		time_t t_graphday_00 = graphday_00.GetTicks();
 		if( !graphday_00.IsDST() && m_graphday.IsDST() ) t_graphday_00 -= 3600;
@@ -784,7 +773,7 @@ CalendarDialog::CalendarDialog ( wxWindow * parent, wxWindowID id, const wxStrin
 	wxPoint p;
 	wxSize  sz;
  
-	sz.SetWidth(180);
+	sz.SetWidth(220);
 	sz.SetHeight(150);
 	
 	p.x = 6; p.y = 2;
@@ -796,16 +785,13 @@ CalendarDialog::CalendarDialog ( wxWindow * parent, wxWindowID id, const wxStrin
  
     dialogCalendar = new wxCalendarCtrl(this, -1, wxDefaultDateTime, p, sz, wxCAL_SHOW_HOLIDAYS ,wxT("Tide Calendar"));
 	
-	wxWindowID text, spinner;
+	//wxWindowID text;
 
-	m_staticText = new wxStaticText(this,text,wxT("Time:"),wxPoint(15,155),wxSize(60,21));
+	//m_staticText = new wxStaticText(this,text,wxT("Time:"),wxPoint(15,155),wxSize(60,21));
 
-	_timeText = new wxTimeTextCtrl(this,text,wxT("12:00"),wxPoint(75,155),wxSize(60,21));
-
-    _spinCtrl=new wxSpinButton(this,spinner,wxPoint(136,155),wxSize(20,21),wxSP_VERTICAL|wxSP_ARROW_KEYS);
-	_spinCtrl->Connect( wxEVT_SCROLL_LINEUP, wxSpinEventHandler( CalendarDialog::spinUp ), NULL, this );
-	_spinCtrl->Connect( wxEVT_SCROLL_LINEDOWN, wxSpinEventHandler( CalendarDialog::spinDown ), NULL, this );
-	
+	//wxDateTime dt = dt.Now();
+	//_timeCtrl = new wxTimePickerCtrl(this, wxID_ANY, dt, wxPoint(75, 155), wxSize(80, 21));
+		
 	p.y += sz.GetHeight() + 30;
 	wxButton * b = new wxButton( this, wxID_OK, _("OK"), p, wxDefaultSize );
 	p.x += 110;
@@ -813,18 +799,6 @@ CalendarDialog::CalendarDialog ( wxWindow * parent, wxWindowID id, const wxStrin
     
 }
 
-
-
-void CalendarDialog::spinUp(wxSpinEvent& event)
-{
-		_timeText->OnArrowUp();
-}
-
-void CalendarDialog::spinDown(wxSpinEvent& event)
-{
-         _timeText->OnArrowDown();
-}
-	
 
 GetPortDialog::GetPortDialog ( wxWindow * parent, wxWindowID id, const wxString & title,
                            const wxPoint & position, const wxSize & size, long style )
@@ -847,8 +821,10 @@ GetPortDialog::GetPortDialog ( wxWindow * parent, wxWindowID id, const wxString 
 	dialogText->SetFont(*pVLFont);
 
 	p.y += sz.GetHeight() + 10;
+
+	p.x += 30;
 	wxButton * b = new wxButton( this, wxID_OK, _("OK"), p, wxDefaultSize );
-	p.x += 110;
+	p.x += 140;
 	wxButton * c = new wxButton( this, wxID_CANCEL, _("Cancel"), p, wxDefaultSize );
 };
 
