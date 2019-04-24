@@ -147,7 +147,9 @@ public:
 	wxString myUnits;
 
 private:
-		PlugIn_Waypoint *myWP;
+	bool outOfRadius;
+
+	    PlugIn_Waypoint *myWP;
 		wxString SelectedPorts[3];
 
 		int FindPortID(wxString myPort);		

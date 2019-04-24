@@ -155,6 +155,7 @@ Dlg::Dlg( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint&
     this->Fit();
 	LoadHarmonics();
 	btc_valid = true;
+	outOfRadius = true;
     dbg=false; //for debug output set to true
 }
 
@@ -170,7 +171,7 @@ void Dlg::OnContextMenu(double m_lat, double m_lon){
 	
 
 	GetPortDialog aboutDialog ( this, -1, _("Select your Port"),
-	                          wxPoint(200, 200), wxSize(300, 200) );
+	                          wxPoint(200, 200), wxSize(300, 200), wxRESIZE_BORDER);
 
     
 	aboutDialog.dialogText->InsertColumn(0, _T(""), 0 , wxLIST_AUTOSIZE);
@@ -182,6 +183,7 @@ void Dlg::OnContextMenu(double m_lat, double m_lon){
 	m_staticText2->SetLabel(wxT(""));
 
     bool foundPort = false;
+	outOfRadius = false;
 	double radius = 0.1;
 	double dist = 0;
 	char N = 'N';
@@ -266,6 +268,7 @@ void Dlg::OnContextMenu(double m_lat, double m_lon){
 							c++;
 							if (c == 4){
 									foundPort = true;
+									outOfRadius = false;
 									break;
 							}	
 						}
@@ -274,6 +277,14 @@ void Dlg::OnContextMenu(double m_lat, double m_lon){
 			}
         
 		radius = radius + 5;
+		if (radius > 200) {
+			wxString notFound = _("No Tidal Stations found");
+			wxListItem myEmptyItem;
+			aboutDialog.dialogText->InsertItem(0, myEmptyItem);
+			aboutDialog.dialogText->SetItem(0, 0, notFound);
+			outOfRadius = true;
+			break;
+		}
 		i = 1;
 	 }
 	 
@@ -388,13 +399,16 @@ void Dlg::OnContextMenu(double m_lat, double m_lon){
 			   this->Refresh();
 			   this->Fit();
 		  }
-		  else{			   
-               wxMessageBox(wxT("No port selected\n ...Right-click to select again"), _T("Port not selected"));
-			   m_listBox1->Hide();
-			   m_staticText3->Hide();
-			   m_staticText2->SetLabel(_T("Right-click to select again ..."));
-			   this->Refresh();
-			   this->Fit();
+		  else{		
+			   if (!outOfRadius) {
+				   wxMessageBox(wxT("No port selected\n ...Right-click to select again"), _T("Port not selected"));
+			   }
+				   m_listBox1->Hide();
+				   m_staticText3->Hide();
+				   m_staticText2->SetLabel(_T("Right-click to select again ..."));
+				   this->Refresh();
+				   this->Fit();
+			   
 		   }
 
 	}
@@ -671,6 +685,7 @@ int Dlg::FindPortID(wxString myPort)
 
 void Dlg::NXEvent( wxCommandEvent& event )
 {	
+	if (outOfRadius) return;
 	wxTimeSpan dt( 24, 0, 0, 0 );
     m_graphday.Add( dt );
     wxDateTime dm = m_graphday;
@@ -690,7 +705,8 @@ void Dlg::NXEvent( wxCommandEvent& event )
 
 void Dlg::PREvent( wxCommandEvent& event )
 {
-    wxTimeSpan dt( -24, 0, 0, 0 );
+	if (outOfRadius) return;
+	wxTimeSpan dt( -24, 0, 0, 0 );
     m_graphday.Add( dt );
     wxDateTime dm = m_graphday;
 
@@ -708,7 +724,7 @@ void Dlg::PREvent( wxCommandEvent& event )
 
 void Dlg::OnCalendarShow( wxCommandEvent& event )
 {	
-
+	if (outOfRadius) return;
 	CalendarDialog CalDialog ( this, -1, _("Select the date for Tides"),
 	                          wxPoint(100, 100), wxSize(240, 250) );	
 
@@ -744,6 +760,7 @@ void Dlg::OnCalendarShow( wxCommandEvent& event )
 
 void Dlg::GFEvent(wxCommandEvent& event){
 
+	if (outOfRadius) return;
 	TCWin *myTCWin = new TCWin(this,100,100, intPortNo, m_PortName, m_t_graphday_00_at_station, m_graphday, myUnits);
 	myTCWin->Show();
 
