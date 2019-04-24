@@ -278,7 +278,7 @@ void Dlg::OnContextMenu(double m_lat, double m_lon){
         
 		radius = radius + 5;
 		if (radius > 200) {
-			wxString notFound = _("No Tidal Stations found");
+			wxString notFound = _("No Tidal Stations found within 200NM");
 			wxListItem myEmptyItem;
 			aboutDialog.dialogText->InsertItem(0, myEmptyItem);
 			aboutDialog.dialogText->SetItem(0, 0, notFound);
