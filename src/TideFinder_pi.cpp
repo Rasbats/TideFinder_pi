@@ -69,6 +69,17 @@ TideFinder_pi::TideFinder_pi(void *ppimgr)
 {
       // Create the PlugIn icons
       initialize_images();
+
+	  wxString shareLocn = *GetpSharedDataLocation() +
+		  _T("plugins") + wxFileName::GetPathSeparator() +
+		  _T("tidefinder_pi") + wxFileName::GetPathSeparator()
+		  + _T("data") + wxFileName::GetPathSeparator();
+	  wxImage panelIcon(shareLocn + _T("tidefinder_panel_icon.png"));
+	  if (panelIcon.IsOk())
+		  m_panelBitmap = wxBitmap(panelIcon);
+	  else
+		  wxLogMessage(_T(" tidefinder_pi panel icon NOT loaded"));
+
 	  m_bShowTideFinder = false;
 }
 
@@ -97,12 +108,15 @@ int TideFinder_pi::Init(void)
       //    And load the configuration items
       LoadConfig();
 
-      //    This PlugIn needs a toolbar icon, so request its insertion
-	if(m_bTideFinderShowIcon)
-      m_leftclick_tool_id  = InsertPlugInTool(_T(""), _img_tf, _img_tf, wxITEM_CHECK,
-            _("Tide Finder"), _T(""), NULL,
-             CALCULATOR_TOOL_POSITION, 0, this);
+#ifdef TIDEFINDER_USE_SVG
+	  m_leftclick_tool_id = InsertPlugInToolSVG(_T("TideFinder"), _svg_tidefinder, _svg_tidefinder, _svg_tidefinder_toggled,
+		  wxITEM_CHECK, _("Tide Finder"), _T(""), NULL, TIDEFINDER_TOOL_POSITION, 0, this);
 
+#else
+	  m_leftclick_tool_id = InsertPlugInTool(_T(""), _img_tf, _img_tf, wxITEM_NORMAL,
+		  _("Tide Finder"), _T(""), NULL,
+		  TIDEFINDER_TOOL_POSITION, 0, this);
+#endif
       
 	wxMenu dummy_menu;
     m_position_menu_id = AddCanvasContextMenuItem
@@ -113,16 +127,12 @@ int TideFinder_pi::Init(void)
 	m_pDialog = NULL;
 
       return (WANTS_OVERLAY_CALLBACK |
-              WANTS_OPENGL_OVERLAY_CALLBACK |
-		  
+              WANTS_OPENGL_OVERLAY_CALLBACK |		  
 		      WANTS_CURSOR_LATLON      |
-              WANTS_TOOLBAR_CALLBACK    |
-              INSTALLS_TOOLBAR_TOOL     |
-              WANTS_NMEA_EVENTS         |
-              WANTS_PREFERENCES         |
+              WANTS_TOOLBAR_CALLBACK   |
+              INSTALLS_TOOLBAR_TOOL    |                        
               WANTS_CONFIG             |
 			  WANTS_PLUGIN_MESSAGING
-
            );
 }
 
@@ -173,7 +183,7 @@ int TideFinder_pi::GetPlugInVersionMinor()
 
 wxBitmap *TideFinder_pi::GetPlugInBitmap()
 {
-      return _img_tf_pi;
+	return &m_panelBitmap;
 }
 
 wxString TideFinder_pi::GetCommonName()
@@ -184,12 +194,12 @@ wxString TideFinder_pi::GetCommonName()
 
 wxString TideFinder_pi::GetShortDescription()
 {
-      return wxEmptyString;
+      return _("Tide Finder Plugin");
 }
 
 wxString TideFinder_pi::GetLongDescription()
 {
-      return wxEmptyString;
+      return _("Allows tidal data to be found beyond today");
 }
 
 int TideFinder_pi::GetToolbarToolCount(void)

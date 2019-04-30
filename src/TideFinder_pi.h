@@ -25,8 +25,8 @@
  ***************************************************************************
  */
 
-#ifndef _CALCULATOR_PI_H_
-#define _CALCULATOR_PI_H_
+#ifndef _TIDEFINDER_PI_H_
+#define _TIDEFINDER_PI_H_
 
 #include "wx/wxprec.h"
 
@@ -36,7 +36,6 @@
 #endif //precompiled headers
 
 #include <wx/fileconf.h>
-
 #include "ocpn_plugin.h" //Required for OCPN plugin functions
 #include "TideFindergui_impl.h"
 
@@ -51,7 +50,7 @@ class Dlg;
 //    The PlugIn Class Definition
 //----------------------------------------------------------------------------------------------------------
 
-#define CALCULATOR_TOOL_POSITION    -1          // Request default positioning of toolbar tool
+#define TIDEFINDER_TOOL_POSITION    -1          // Request default positioning of toolbar tool
 
 class TideFinder_pi : public opencpn_plugin_110
 {
@@ -100,7 +99,9 @@ public:
       bool              LoadConfig(void);
 
 private:
-      wxFileConfig      *m_pconfig;
+      
+	  wxBitmap m_panelBitmap;
+	  wxFileConfig      *m_pconfig;
 	  void OnClose( wxCloseEvent& event );
 
 	  TideFinder_pi *plugin;

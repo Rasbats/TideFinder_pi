@@ -56,7 +56,7 @@ WX_DECLARE_LIST(wxPoint, SplineList);           // for spline curve points
 class TCWin: public wxDialog
 {
 public:
-      TCWin(wxWindow * parent, int x, int y, int PortNo, wxString PortName, int graphday_00_s, wxDateTime graphDayD, wxString myUnits);
+      TCWin(wxWindow * parent, int x, int y, int PortNo, wxString PortName, int graphday_00_s, wxDateTime graphDayD, int offset, double lat, wxString myUnits);
       ~TCWin();
 
       void OnSize(wxSizeEvent& event);
@@ -87,7 +87,9 @@ private:
 	wxString m_passName;
 	int  m_passStation;
 	wxDateTime m_passGraphDay;
-	wxString m_units;
+	int m_passOffset;
+	double m_passLat;
+	wxString m_passUnits;
     wxStaticText  *m_ptextctrl;
 
     int           curs_x;

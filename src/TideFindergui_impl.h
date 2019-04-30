@@ -146,13 +146,17 @@ public:
 	IDX_entry *pIDX;
 	wxString myUnits;
 
+	int station_offset;
+	double station_lat;
+
 private:
 	bool outOfRadius;
 
 	    PlugIn_Waypoint *myWP;
 		wxString SelectedPorts[3];
 
-		int FindPortID(wxString myPort);		
+		int FindPortID(wxString myPort);	
+		void MakeLabelDate(int offset, double lat, wxDateTime graphday);
 		int FindNearestPorts(int n);
 
 		void OnStartSetupHW();

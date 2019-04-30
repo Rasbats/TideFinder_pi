@@ -12,4 +12,9 @@ extern void initialize_images(void);
 extern wxBitmap *_img_tf;
 extern wxBitmap *_img_tf_pi;
 
+#ifdef TIDEFINDER_USE_SVG
+extern wxString _svg_tidefinder;
+extern wxString _svg_tidefinder_toggled;
+#endif
+
 #endif /* ICONS_H */

@@ -14,14 +14,19 @@ SET(TITLE_NAME TideFinder)
 SET(CPACK_PACKAGE_CONTACT "Mike Rossiter")
 
 SET(VERSION_MAJOR "1")
-SET(VERSION_MINOR "1")
+SET(VERSION_MINOR "2")
 
 #SET(CMAKE_BUILD_TYPE Debug)
+OPTION(TIDEFINDER_USE_SVG "Use SVG graphics" ON)
 
 SET(NAME_SUFFIX "ov50")
 SET(CMAKE_CXX_STANDARD 11)
 
 INCLUDE("cmake/PluginConfigure.cmake")
+
+IF(TIDEFINDER_USE_SVG)
+  ADD_DEFINITIONS(-DTIDEFINDER_USE_SVG)
+ENDIF(TIDEFINDER_USE_SVG)
 
 SET(SRC_TIDEFINDER
             src/TideFinder_pi.h
@@ -40,6 +45,7 @@ SET(SRC_TIDEFINDER
             src/TCWin.h
             src/timectrl.h
             src/timectrl.cpp
+			src/ocpn_plugin.h
     )
 
 IF(UNIX)

@@ -52,13 +52,17 @@ BEGIN_EVENT_TABLE ( TCWin, wxWindow ) EVT_PAINT ( TCWin::OnPaint )
 END_EVENT_TABLE()
 
 // Define a constructor
-TCWin::TCWin( wxWindow * parent, int x, int y, int PortNo, wxString PortName, int graphday_00_s, wxDateTime graphDayD, wxString myUnits )
+TCWin::TCWin( wxWindow * parent, int x, int y, int PortNo, wxString PortName, int graphday_00_s, wxDateTime graphDayD, int offset, double lat, wxString myUnits )
 {
 	m_passPort = PortNo;
 	m_passName = PortName;
     m_passStation = graphday_00_s;
 	m_passGraphDay = graphDayD;
-	m_units = myUnits;
+	m_passOffset = offset;
+	m_passLat = lat;
+	m_passUnits = myUnits;
+
+	
 
     //    As a display optimization....
     //    if current color scheme is other than DAY,
@@ -107,21 +111,23 @@ TCWin::TCWin( wxWindow * parent, int x, int y, int PortNo, wxString PortName, in
 	myDlg->m_graphday = m_graphday;
 	myDlg->m_t_graphday_00_at_station = m_passStation;
 	myDlg->m_graphday = m_passGraphDay;
+	myDlg->station_offset = m_passOffset;
 	m_t_graphday_00_at_station = m_passStation;
-	m_graphday = m_passGraphDay;
+	m_graphday = m_passGraphDay;	
 
-//    Figure out this computer timezone minute offset
-    wxDateTime this_now = wxDateTime::Now();
-    wxDateTime this_gmt = this_now.ToGMT();
+
+	//    Figure out this computer timezone minute offset
+	wxDateTime this_now = wxDateTime::Now();
+	wxDateTime this_gmt = this_now.ToGMT();
 
 #if wxCHECK_VERSION(2, 6, 2)
-    wxTimeSpan diff = this_now.Subtract( this_gmt );
+	wxTimeSpan diff = this_now.Subtract(this_gmt);
 #else
-    wxTimeSpan diff = this_gmt.Subtract ( this_now );
+	wxTimeSpan diff = this_gmt.Subtract(this_now);
 #endif
 
 	int diff_mins = diff.GetMinutes();
-	
+
 	//  Correct a bug in wx3.0.2
 	//  If the system TZ happens to be GMT, with DST active (e.g.summer in London),
 	//  then wxDateTime returns incorrect results for toGMT() method
@@ -130,12 +136,8 @@ TCWin::TCWin( wxWindow * parent, int x, int y, int PortNo, wxString PortName, in
 		diff_mins += 60;
 #endif
 
-    int station_offset = 0;
-
-    m_corr_mins = station_offset - diff_mins;
-    if( this_now.IsDST() ) m_corr_mins += 60;
-
-//    Establish the inital drawing day as today
+	m_corr_mins = m_passOffset - diff_mins;
+	if (this_now.IsDST()) m_corr_mins += 60;
 	
     btc_valid = false;
 
@@ -393,7 +395,7 @@ void TCWin::OnPaint( wxPaintEvent& event )
                         s.Printf( tcd.Format( _T("%H:%M  ") ) );
                         s1.Printf( _T("%05.2f "), tcvalue );                           //write value
                         s.Append( s1 );
-                        s.Append( m_units);
+                        s.Append( m_passUnits);
 
                         ( wt ) ? s.Append( _("  HW") ) : s.Append( _("  LW") );         //write HW or LT
 
@@ -481,12 +483,33 @@ void TCWin::OnPaint( wxPaintEvent& event )
 #endif
         //  More Info
 
-///
-        int station_offset = 0;
-        int h = station_offset / 60;
-        int m = station_offset - ( h * 60 );
-        if( m_graphday.IsDST() ) h += 1;
-        m_stz.Printf( _T("Z %+03d:%02d"), h, m );
+
+		int h = m_passOffset / 60;
+		int m = m_passOffset - (h * 60);
+		if (m_graphday.IsDST()) h += 1;
+		m_stz.Printf(_T("UTC %+03d:%02d"), h, m);
+
+		//    Make the "nice" (for the US) station time-zone string, brutally by hand	
+		if (m_passLat > 20.0) {
+			wxString mtz;
+			switch (m_passOffset) {
+			case -240:
+				mtz = _T("AST");
+				break;
+			case -300:
+				mtz = _T("EST");
+				break;
+			case -360:
+				mtz = _T("CST");
+				break;
+			}
+
+			if (mtz.Len()) {
+				if (m_graphday.IsDST()) mtz[1] = 'D';
+
+				m_stz = mtz;
+			}
+		}
 
         dc.SetFont( *pSFont );
         dc.GetTextExtent( m_stz, &w, &h );
@@ -508,12 +531,11 @@ void TCWin::OnPaint( wxPaintEvent& event )
 
         ///
        
-            dc.GetTextExtent(  wxT("meters"), &w, &h );
-            dc.DrawRotatedText(  wxT("meters"), 5,
-                                m_graph_rect.y + m_graph_rect.height / 2 + w / 2, 90. );
+        dc.GetTextExtent(  m_passUnits, &w, &h );
+        dc.DrawRotatedText( m_passUnits, 5, m_graph_rect.y + m_graph_rect.height / 2 + w / 2, 90. );
   
 
-//    Today or tomorrow
+		//    Today or tomorrow
         wxString sday;
         wxDateTime this_now = wxDateTime::Now();
 

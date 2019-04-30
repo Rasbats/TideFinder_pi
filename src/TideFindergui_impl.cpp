@@ -204,7 +204,7 @@ void Dlg::OnContextMenu(double m_lat, double m_lon){
 	while (!foundPort){
 	        for ( i=1 ; i<ptcmgr->Get_max_IDX() +1 ; i++ )
             {				
-						IDX_entry *pIDX = ptcmgr->GetIDX_entry (i);
+						pIDX = ptcmgr->GetIDX_entry (i);
 
                         char type = pIDX->IDX_type;             // Entry "TCtcIUu" identifier
                         if ( ( type == 't' ) ||  ( type == 'T' ) )  // only Tides
@@ -474,6 +474,8 @@ void Dlg::LoadHarmonics()
 void Dlg::OnCalculate(){
 
 	pIDX = ptcmgr->GetIDX_entry(intPortNo);
+
+	station_lat = pIDX->IDX_lat;
 	
 	//    Figure out this computer timezone minute offset
 	wxDateTime this_now = wxDateTime::Now();
@@ -494,14 +496,19 @@ void Dlg::OnCalculate(){
 	if (diff_mins == 0 && this_now.IsDST())
 		diff_mins += 60;
 #endif
-	int station_offset = ptcmgr->GetStationTimeOffset(pIDX);
 
+	station_offset = ptcmgr->GetStationTimeOffset(pIDX);
+	//wxMessageBox(wxString::Format(_T("%i"), station_offset));
+	
 	m_corr_mins = station_offset - diff_mins;
 	if (this_now.IsDST()) m_corr_mins += 60;
 
 	//    Establish the inital drawing day as today
 	m_graphday = wxDateTime::Now();
 	wxDateTime graphday_00 = wxDateTime::Today();
+
+	graphday_00.ResetTime();
+
 	time_t t_graphday_00 = graphday_00.GetTicks();
 
 	//    Correct a Bug in wxWidgets time support
@@ -510,23 +517,7 @@ void Dlg::OnCalculate(){
 
 	m_t_graphday_00_at_station = t_graphday_00 - (m_corr_mins * 60);
 
-	int d = m_graphday.GetDayOfYear();
-	wxString MyDay = wxString::Format(wxT("%d"),(int) d); // For harmonics Table 7
-
-	wxString s_UTC;
-	if (m_graphday.IsDST()){
-		s_UTC = wxT(" (Z+1)");
-	}
-	else{
-		s_UTC = wxT(" (Z)");
-	}
-
-	wxString s0 = m_graphday.Format( _T ("%A %d %B %Y"));
-	wxString s1 = m_graphday.Format(_T("%H:%M"));			 
-	s2time = s0 + _(" ") + s1 + s_UTC;			
-						
-	m_staticText3->SetLabel(s2time);  
-  	myTime = m_graphday.GetTicks();
+	MakeLabelDate(station_offset, station_lat, m_graphday);
 
 	CalcHWLW(intPortNo);  //port_clicked); 	
 }
@@ -534,7 +525,9 @@ void Dlg::OnCalculate(){
 
 void Dlg::CalcHWLW(int PortCode)
 {
-	    m_listBox1->Clear();
+	    
+	
+		m_listBox1->Clear();
 
 		m_PortNo = wxString::Format(wxT("%i"),PortCode);
 
@@ -580,86 +573,28 @@ void Dlg::CalcHWLW(int PortCode)
                                                       float tcvalue;                                        //look backward for HW or LW
                                                       time_t tctime;
                                                       ptcmgr->GetHightOrLowTide(tt, BACKWARD_TEN_MINUTES_STEP, BACKWARD_ONE_MINUTES_STEP, tcv[i], wt, pIDX->IDX_rec_num, tcvalue, tctime);
-
-                                                      wxDateTime tcd ;                                                              //write date
-                                                      wxString s, s1, s2;
-                                                      tcd.Set( tctime + ( m_corr_mins * 60 ) ) ;
-
-													  s2 = tcd.Format ( _T ("%A %d %B %Y"));
-                                                      s.Printf(tcd.Format(_T("%H:%M  ")));													 
-
-                                                      s1.Printf( _T("%05.2f "),tcvalue);    												  
-	
-													  pmsd = pIDX->pref_sta_data;                         //write unit 													  
 													  
-													  ( wt )? sHWLW = _("HW") : sHWLW = _("LW"); 
-																                                                        
-													  // Fill the array with tide data
-													  TC[array_index][0] = s2 + _(" ") + s;													  													
-													  TC[array_index][1] = s1;
-													  TC[array_index][2] = wxString(pmsd->units_abbrv ,wxConvUTF8);
-													  TC[array_index][3] = sHWLW;
+													  wxDateTime tcd;                                                 //write date
+													  wxString s, s1;
+													  tcd.Set(tctime + (m_corr_mins * 60));
+													  s.Printf(tcd.Format(_T("%H:%M  ")));
+													  s1.Printf(_T("%05.2f "), tcvalue);                           //write value
+													  s.Append(s1);
+													  Station_Data *pmsd = pIDX->pref_sta_data;                       //write unit
+													  if (pmsd) s.Append(wxString(pmsd->units_abbrv, wxConvUTF8));
+													  myUnits = wxString(pmsd->units_conv, wxConvUTF8);
+													  s.Append(_T("   "));
+													  (wt) ? s.Append(_("HW")) : s.Append(_("LW"));         //write HW or LT
 
-													  if (TC[array_index][3] == _("LW")) 
-													  {									
-														myLW = tcvalue;
-														wxString s_LW = wxString::Format(wxT("%05.2f"),(float) myLW);
-														m_listBox1->Insert((TC[array_index][0]) + _T("  ") + _T("LW: ") + s_LW + _T(" ") + TC[array_index][2] ,list_index);
-														myUnits = TC[array_index][2];
-														list_index++;
-													  }
-													  
-													  if (TC[array_index][3] == _("HW")) 
-													  {
-														myHW = tcvalue;
-														wxString s_HW = wxString::Format(wxT("%05.2f"),(float) myHW);
-														m_listBox1->Insert((TC[array_index][0]) + _T("  ") + _T("HW: ") + s_HW  + _T(" ") + TC[array_index][2] , list_index);
-														list_index++;
-													  }  
-
-													   myRange = myHW - myLW;
-													 
-													  if ((abs(myRange) == myHW) || (abs(myRange) == myLW))
-													  {
-															// out of range
-													  }
-													  else
-													  {
-														  myArrayOfRanges[c] = myRange;
-														  c++;
-													  }
-														
-													  array_index++;
-													  
-                                                      wt = !wt ;     //change tide flow sens
-
+													  m_listBox1->Insert(s, list_index);                       // update table list
+													  list_index++;
+													  wt = !wt;
                                                     }
 
 													val = tcv[i];                                                                                                
                         }
 
-						float tidalheight, risefall;
-					    ptcmgr->GetTideOrCurrent(myTime, PortCode, tidalheight, risefall);
-
-						wxString th;
-						th = wxString::Format(wxT("%05.2f"),tidalheight);
-
-						wxString ot;
-
-					    myUnits = wxString(pmsd->units_abbrv ,wxConvUTF8);
-						ot = s2time + _T("   Height: ") + th + _T(" ") + myUnits;
-		
-						m_staticText3->SetLabel(ot);
-
-
-						c--;
-						n = 0;
-						double AddRanges = 0;
-						for (n; n<c; n++){
-						   AddRanges = AddRanges + myArrayOfRanges[n];
-						}
-						// myRange for the speed of current calculation
-						myRange = AddRanges/n;												
+										
 }
 
 
@@ -683,14 +618,57 @@ int Dlg::FindPortID(wxString myPort)
 			return 0;
 }
 
+void Dlg::MakeLabelDate(int offset, double lat, wxDateTime graphday) {
+
+
+	int h = offset / 60;
+	int m = offset - (h * 60);
+	if (graphday.IsDST()) h += 1;
+	m_stz.Printf(_T("UTC %+03d:%02d"), h, m);
+
+	//    Make the "nice" (for the US) station time-zone string, brutally by hand	
+	if (lat > 20.0) {
+		wxString mtz;
+		switch (offset) {
+		case -240:
+			mtz = _T("AST");
+			break;
+		case -300:
+			mtz = _T("EST");
+			break;
+		case -360:
+			mtz = _T("CST");
+			break;
+		}
+
+		if (mtz.Len()) {
+			if (graphday.IsDST()) mtz[1] = 'D';
+
+			m_stz = mtz;
+		}
+	}
+
+	wxString sdate;
+	sdate = graphday.Format(_T("%A %d %b %Y"));
+	wxString labeldate;
+	labeldate = sdate + _T(" (") + m_stz + _T(")");
+	m_staticText3->SetLabel(labeldate);
+
+
+
+}
+
 void Dlg::NXEvent( wxCommandEvent& event )
 {	
 	if (outOfRadius) return;
 	wxTimeSpan dt( 24, 0, 0, 0 );
     m_graphday.Add( dt );
-    wxDateTime dm = m_graphday;
 
+	MakeLabelDate(station_offset, station_lat, m_graphday);
+
+    wxDateTime dm = m_graphday;
     wxDateTime graphday_00 = dm.ResetTime();
+
     if(graphday_00.GetYear() == 2013)
         int yyp = 4;
 
@@ -708,8 +686,10 @@ void Dlg::PREvent( wxCommandEvent& event )
 	if (outOfRadius) return;
 	wxTimeSpan dt( -24, 0, 0, 0 );
     m_graphday.Add( dt );
-    wxDateTime dm = m_graphday;
 
+	MakeLabelDate(station_offset, station_lat, m_graphday);
+
+    wxDateTime dm = m_graphday;
     wxDateTime graphday_00 = dm.ResetTime();
     time_t t_graphday_00 = graphday_00.GetTicks();
 
@@ -728,23 +708,13 @@ void Dlg::OnCalendarShow( wxCommandEvent& event )
 	CalendarDialog CalDialog ( this, -1, _("Select the date for Tides"),
 	                          wxPoint(100, 100), wxSize(240, 250) );	
 
-	if ( CalDialog.ShowModal() == wxID_OK ){
-				
-		wxDateTime this_now = wxDateTime::Now();
+	if ( CalDialog.ShowModal() == wxID_OK ){				
 
-		wxString todayHours = this_now.Format(_T("%H"));
-		wxString todayMinutes = this_now.Format(_T("%M"));
+		m_graphday = CalDialog.dialogCalendar->GetDate();
 
-		double h;
-		double m;
+		MakeLabelDate(station_offset, station_lat, m_graphday);
 
-		todayHours.ToDouble(&h);
-		todayMinutes.ToDouble(&m);
-		wxTimeSpan myTimeOfDay = wxTimeSpan(h, m, 0, 0);
-
-		wxDateTime dm = CalDialog.dialogCalendar->GetDate();		
-
-		m_graphday = dm.Add(myTimeOfDay);
+		wxDateTime dm = m_graphday;
 
 		wxDateTime graphday_00 = dm.ResetTime();
 
@@ -761,7 +731,7 @@ void Dlg::OnCalendarShow( wxCommandEvent& event )
 void Dlg::GFEvent(wxCommandEvent& event){
 
 	if (outOfRadius) return;
-	TCWin *myTCWin = new TCWin(this,100,100, intPortNo, m_PortName, m_t_graphday_00_at_station, m_graphday, myUnits);
+	TCWin *myTCWin = new TCWin(this,100,100, intPortNo, m_PortName, m_t_graphday_00_at_station, m_graphday, station_offset, station_lat, myUnits);
 	myTCWin->Show();
 
 }

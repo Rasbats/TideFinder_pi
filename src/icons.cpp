@@ -5,9 +5,16 @@
 #endif
 #include <wx/mstream.h>
 #include "icons.h"
+#include <wx/filename.h>
 
 wxBitmap *_img_tf;
 wxBitmap *_img_tf_pi;
+
+#ifdef TIDEFINDER_USE_SVG
+#include "ocpn_plugin.h"
+wxString _svg_tidefinder;
+wxString _svg_tidefinder_toggled;
+#endif
 
 void initialize_images(void)
 {
@@ -19,5 +26,20 @@ void initialize_images(void)
 		wxMemoryInputStream sm("\211PNG\r\n\032\n\000\000\000\rIHDR\000\000\000 \000\000\000 \b\006\000\000\000szz\364\000\000\000\004sBIT\b\b\b\b|\bd\210\000\000\000\001sRGB\000\256\316\034\351\000\000\000\004gAMA\000\000\261\217\013\374a\005\000\000\000\011pHYs\000\000\016\304\000\000\016\304\001\225+\016\033\000\000\000\031tEXtSoftware\000www.inkscape.org\233\356<\032\000\000\001\212IDATXG\355\227\261j\302P\024\206\377\033\005+F:\224\342\352$\005Ep\353\0138d\020\004\327t\364\001l\237\303\344\001\034\353\352\344 \264[@hp\020\244\205b\027W\351jQAI=\267\307\326V)Q\232\244\244\375\340B\3569\a\376\223{\316\362\013g\005V\014\006\003\364\373}L\247S\b!(\364\343\220T<\036G\241P@>\237\2271\331@\243\321@$\022A\251T\202\252\252\262\320\013\350\307&\223\011\332\3556\226\313%\252\325*\204m\333\316p8\204\256\353\\\346\017\315f\023\231L\006J\257\327C\245R\341\260\177\220&i+\363\371\\\316\305oH\223\264\025\257\026\316\r\244\255\360w`\004\336\2000\014\303\251\325j|}\343\341n\214\334\023_\016\300\271H\361\327\367\230\246\371?\202_\332@\366<%\347\370\351\224U\\r\376\203(n\312\333\265\373\020\226\021,p\333\031C\\\357>W\217\013\256\333&\214Kx\204\373/;Q?\213rn\2330\276\300\014\271\315\035\350\274\340\2313\273\370\003;\240%p\312\231]\204\361\005\366#,\rDQ\324\326s?F\226\243np\337@2\201\372\346r\311s\202b\222\363\a\022\374\b\274rAn m\205,\031\331$\277!M\322V\310\036Y\226\305a\377 Mi\3154MC\267\333\225\307/\326z\244\375n\317[\255\026F\243\021b\261\230,\362\n\262c\351t\232\375(\360\n_\247\252\214\307\336\025\377\000\000\000\000IEND\256B`\202", 554);
 		_img_tf = new wxBitmap(wxImage(sm));
 	}
+
+#ifdef TIDEFINDER_USE_SVG
+	wxFileName fn;
+	fn.SetPath(*GetpSharedDataLocation());
+	fn.AppendDir(_T("plugins"));
+	fn.AppendDir(_T("tidefinder_pi"));
+	fn.AppendDir(_T("data"));
+	fn.SetFullName(_T("tidefinder_pi.svg"));
+	_svg_tidefinder = fn.GetFullPath();
+	fn.SetFullName(_T("tidefinder_pi_toggled.svg"));
+	_svg_tidefinder_toggled = fn.GetFullPath();
+
+#endif
+
+
 	return;
 }
