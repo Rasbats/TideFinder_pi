@@ -42,7 +42,7 @@
 #include "version.h"
 
 #define     MY_API_VERSION_MAJOR    1
-#define     MY_API_VERSION_MINOR    10
+#define     MY_API_VERSION_MINOR    16
 
 class Dlg;
 
@@ -52,7 +52,7 @@ class Dlg;
 
 #define TIDEFINDER_TOOL_POSITION    -1          // Request default positioning of toolbar tool
 
-class TideFinder_pi : public opencpn_plugin_110
+class TideFinder_pi : public opencpn_plugin_116
 {
 public:
       TideFinder_pi(void *ppimgr);

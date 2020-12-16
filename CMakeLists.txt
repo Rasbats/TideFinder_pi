@@ -1,32 +1,74 @@
-##---------------------------------------------------------------------------
-## Author:      Rasbats aka. Mike Rossiter
-## Copyright:
-## License:     wxWidgets License
-##---------------------------------------------------------------------------
+# ~~~
+# Author:      Rasbats aka. Mike Rossiter
+# Copyright:
+# License:     wxWidgets License
+# ~~~
 
-# define minimum cmake version
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6.2)
-PROJECT(tidefinder_pi)
+# -------- Cmake setup ---------
+#
+cmake_minimum_required(VERSION 3.5.1)
 
-SET(PACKAGE_NAME tidefinder_pi)
-SET(VERBOSE_NAME TideFinder)
-SET(TITLE_NAME TideFinder)
-SET(CPACK_PACKAGE_CONTACT "Mike Rossiter")
+cmake_policy(SET CMP0042 NEW)
 
-SET(VERSION_MAJOR "1")
-SET(VERSION_MINOR "2")
+if (POLICY CMP0077)
+  cmake_policy(SET CMP0077 NEW)
+endif ()
 
-#SET(CMAKE_BUILD_TYPE Debug)
-OPTION(TIDEFINDER_USE_SVG "Use SVG graphics" ON)
+# Prefer libGL.so to libOpenGL.so, see CMP0072
+set(OpenGL_GL_PREFERENCE "LEGACY")
 
-SET(NAME_SUFFIX "ov50")
-SET(CMAKE_CXX_STANDARD 11)
+# Locations where cmake looks for cmake modules.
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/build ${CMAKE_SOURCE_DIR}/cmake)
 
-INCLUDE("cmake/PluginConfigure.cmake")
+if (WIN32)
+  list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/buildwin)
+endif ()
+message(STATUS "Cmake version: ${CMAKE_VERSION}.")
 
-IF(TIDEFINDER_USE_SVG)
-  ADD_DEFINITIONS(-DTIDEFINDER_USE_SVG)
-ENDIF(TIDEFINDER_USE_SVG)
+
+# -------- Build setup (mostly in PluginCompiler) --------
+#
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+message(STATUS "Building: ${BUILD_TYPE}")
+
+
+# -------- Options ----------
+
+set(OCPN_TEST_REPO
+    "opencpn/tidefinder-alpha"
+    CACHE STRING "Default repository for untagged builds"
+)
+set(OCPN_BETA_REPO
+    "opencpn/tidefinder-beta"
+    CACHE STRING 
+    "Default repository for tagged builds matching 'beta'"
+)
+set(OCPN_RELEASE_REPO
+    "opencpn/tidefinder-prod"
+    CACHE STRING 
+    "Default repository for tagged builds not matching 'beta'"
+)
+option(TIDEFINDER_USE_SVG "Use SVG graphics" ON)
+
+
+# -------  Plugin setup --------
+#
+project(TideFinder_pi VERSION 1.2.0)
+
+set(DISPLAY_NAME TideFinder)    # Dialogs, installer artifacts, ...
+set(PLUGIN_API_NAME TideFinder) # As of GetCommonName() in plugin API
+set(CPACK_PACKAGE_CONTACT "Mike Rossiter")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Easy tide prediction for future dates")
+set(CPACK_PACKAGE_DESCRIPTION [=[
+"Simplifies the prediction of tides for dates in the future. \nSelects the tidal stations within the area of the vessel"
+]=])
+
+set(PKG_RELEASE "1")
+set(PKG_AUTHOR "Mike Rossiter")
 
 SET(SRC_TIDEFINDER
             src/TideFinder_pi.h
@@ -45,31 +87,78 @@ SET(SRC_TIDEFINDER
             src/TCWin.h
             src/timectrl.h
             src/timectrl.cpp
-			src/ocpn_plugin.h
     )
 
-IF(UNIX)
- INCLUDE("cmake/FindTinyXML.cmake")
- FIND_PACKAGE(TinyXML QUIET)
-ENDIF(UNIX)
 
-IF(TINYXML_FOUND)
- message (STATUS "Building with system tinyxml")
- INCLUDE_DIRECTORIES(${TINYXML_INCLUDE_DIR})
- ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_TIDEFINDER})
- TARGET_LINK_LIBRARIES(${PACKAGE_NAME} ${TINYXML_LIBRARIES})
-ELSE(TINYXML_FOUND)
- message (STATUS "Building with embedded tinyxml")
- INCLUDE_DIRECTORIES(src/tinyxml/)
- SET(SRC_LTINYXML
-            src/tinyxml/tinyxml.cpp
-            src/tinyxml/tinyxmlparser.cpp
-            src/tinyxml/tinyxmlerror.cpp
- )
- ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_TIDEFINDER} ${SRC_LTINYXML})
-ENDIF(TINYXML_FOUND)
-ADD_DEFINITIONS(-DTIXML_USE_STL)
+# -------- Setup completed, build the plugin --------
+#
+add_library(${CMAKE_PROJECT_NAME} SHARED ${SRC})
+include_directories(${CMAKE_BINARY_DIR}/include)
 
-INCLUDE("cmake/PluginInstall.cmake")
-INCLUDE("cmake/PluginLocalization.cmake")
-INCLUDE("cmake/PluginPackage.cmake")
+add_subdirectory("libs/api-16")
+target_link_libraries(${CMAKE_PROJECT_NAME} ocpn::api)
+
+set(VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+set(VERSION_MINOR ${PROJECT_VERSION_MINOR})
+set(VERSION_PATCH ${PROJECT_VERSION_PATCH})
+set(PACKAGE_NAME ${CMAKE_PROJECT_NAME})
+
+# Create the minimim ocpn version id string like ov50
+string(REGEX REPLACE "\([0-9]\)\.\([0-9]\).*" "ov\\1\\2"
+       OCPN_MIN_VERSION ${API_OCPN_MIN_VERSION})
+
+if (TIDEFINDER_USE_SVG)
+  add_definitions(-DTIDEFINDER_USE_SVG)
+endif ()
+
+
+# Set up targets. Targets sets up a recursive call with BUILD_TYPE set to
+# 'flatpak', 'pkg' or 'tarball'. The initial call without BUILD_TYPE ends
+# here.
+#
+include(Targets)
+create_targets(
+  ${PROJECT_SOURCE_DIR}/flatpak/org.opencpn.OpenCPN.Plugin.TideFinder.yaml
+)
+if ("${BUILD_TYPE}" STREQUAL "")
+  return ()
+endif ()
+
+if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
+  # Build package as required (flatpak already dealt with).
+  #
+  include(PluginCompiler)
+  include(PluginLibs)
+  include(PluginLocalization)
+  include(PluginInstall)
+  include(PluginPackage)
+
+  add_subdirectory("libs/jsoncpp")
+  target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
+  
+  add_subdirectory("libs/tinyxml")
+  target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
+  
+  add_subdirectory("libs/wxJSON")
+  target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
+endif ()
+
+configure_file(
+  # The cloudsmith upload script
+  ${CMAKE_SOURCE_DIR}/ci/upload.sh.in ${CMAKE_BINARY_DIR}/upload.sh
+  @ONLY
+)
+configure_file(
+  # The cloudsmith upload script, windows bat file.
+  ${CMAKE_SOURCE_DIR}/ci/upload.bat.in ${CMAKE_BINARY_DIR}/upload.bat
+  @ONLY
+)
+
+
+set(checksum "@checksum@")
+configure_file(
+  # The XML metadata file
+  ${CMAKE_SOURCE_DIR}/TideFinder-plugin.xml.in
+  ${CMAKE_BINARY_DIR}/${pkg_displayname}.xml.in
+  @ONLY
+)

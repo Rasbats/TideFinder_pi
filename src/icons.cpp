@@ -28,11 +28,14 @@ void initialize_images(void)
 	}
 
 #ifdef TIDEFINDER_USE_SVG
+
 	wxFileName fn;
-	fn.SetPath(*GetpSharedDataLocation());
-	fn.AppendDir(_T("plugins"));
-	fn.AppendDir(_T("tidefinder_pi"));
+	wxString tmp_path;
+
+	tmp_path = GetPluginDataDir("TideFinder_pi");
+	fn.SetPath(tmp_path);
 	fn.AppendDir(_T("data"));
+
 	fn.SetFullName(_T("tidefinder_pi.svg"));
 	_svg_tidefinder = fn.GetFullPath();
 	fn.SetFullName(_T("tidefinder_pi_toggled.svg"));
