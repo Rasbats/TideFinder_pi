@@ -154,7 +154,7 @@ configure_file(
 )
 
 
-#set(checksum "@checksum@")
+set(checksum "@checksum@")
 configure_file(
   # The XML metadata file
   ${CMAKE_SOURCE_DIR}/TideFinder-plugin.xml.in
