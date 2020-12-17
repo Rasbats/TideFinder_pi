@@ -153,7 +153,6 @@ configure_file(
   @ONLY
 )
 
-
 set(checksum "@checksum@")
 configure_file(
   # The XML metadata file
