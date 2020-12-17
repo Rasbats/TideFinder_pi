@@ -39,6 +39,9 @@
 #include "ocpn_plugin.h" //Required for OCPN plugin functions
 #include "TideFindergui_impl.h"
 
+#define     PLUGIN_VERSION_MAJOR    1
+#define     PLUGIN_VERSION_MINOR    2
+
 #define     MY_API_VERSION_MAJOR    1
 #define     MY_API_VERSION_MINOR    16
 
