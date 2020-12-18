@@ -14,6 +14,7 @@
 #include <wx/listimpl.cpp>
 
 class Dlg;
+class CalendarDialog;
 
 //using namespace std;
 

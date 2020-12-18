@@ -48,6 +48,7 @@ class TideFinder_pi;
 class TidalFactors;
 class PortTides;
 class TCWin;
+class CalendarDialog;
 
 extern wxArrayString    TideCurrentDataSet;
 
