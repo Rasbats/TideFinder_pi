@@ -57,7 +57,6 @@ class TideFinder_pi;
 class StandardPort;
 class Position;
 class Route;
-class VMHData;
 class TCWin;
 class TCMgr;
 class PortTides;
@@ -96,9 +95,7 @@ public:
 
 
         TideFinder_pi *plugin; 
-		
-		std::vector<VMHData> my_dataList;
-		std::vector<VMHData> my_LocationList;
+
 
 
 		void OnContextMenu(double m_lat, double m_lon);
@@ -147,8 +144,8 @@ public:
 
 	int station_offset;
 	double station_lat;
-    void MakeLabelDate(int offset, double lat, wxDateTime graphday);
-    
+	void MakeLabelDate(int offset, double lat, wxDateTime graphday);
+
 private:
 	bool outOfRadius;
 

@@ -45,7 +45,6 @@
 
 class Position;
 class TideFinder_pi;
-class VMHData;
 class Harmonics;
 class TidalFactors;
 class PortTides;
@@ -649,7 +648,7 @@ void Dlg::MakeLabelDate(int offset, double lat, wxDateTime graphday) {
 	wxString sdate;
 	sdate = graphday.Format(_T("%A %d %b %Y"));
 	wxString labeldate;
-	labeldate = sdate + _T(" (") + m_stz + _T(")");
+	labeldate = sdate + _T(" ") + m_stz + _T("");
 	m_staticText3->SetLabel(labeldate);
 
 
