@@ -11,6 +11,7 @@
 #include <wx/graphics.h>
 #include "tcmgr.h"
 #include <wx/wxchar.h>
+#include <wx/listimpl.cpp>
 
 class Harmonics;
 class Dlg;
@@ -39,7 +40,7 @@ enum
       TIDE_PLOT
 };
 
-#include <wx/listimpl.cpp>
+
 WX_DEFINE_LIST( SplineList );
 
 BEGIN_EVENT_TABLE ( TCWin, wxWindow ) EVT_PAINT ( TCWin::OnPaint )
@@ -487,7 +488,7 @@ void TCWin::OnPaint( wxPaintEvent& event )
 		int h = m_passOffset / 60;
 		int m = m_passOffset - (h * 60);
 		if (m_graphday.IsDST()) h += 1;
-		m_stz.Printf(_T("UTC %+03d:%02d"), h, m);
+		m_stz.Printf(_T("UTC %03d:%02d"), h, m);
 
 		//    Make the "nice" (for the US) station time-zone string, brutally by hand	
 		if (m_passLat > 20.0) {
