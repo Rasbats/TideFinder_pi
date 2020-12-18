@@ -110,6 +110,7 @@ if (TIDEFINDER_USE_SVG)
   add_definitions(-DTIDEFINDER_USE_SVG)
 endif ()
 
+add_definitions(-DWXUSINGDLL)
 
 # Set up targets. Targets sets up a recursive call with BUILD_TYPE set to
 # 'flatpak', 'pkg' or 'tarball'. The initial call without BUILD_TYPE ends
