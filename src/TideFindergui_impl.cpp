@@ -643,7 +643,7 @@ void Dlg::MakeLabelDate(int offset, double lat, wxDateTime graphday) {
 			break;
 		}
 
-		if (mtz.Len()) {
+		if (mtz.Len() > 0) {
 			if (graphday.IsDST()) mtz[1] = 'D';
 
 			m_stz = mtz;
