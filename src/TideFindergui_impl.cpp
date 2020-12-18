@@ -42,6 +42,7 @@
 #include <vector>
 #include "timectrl.h"
 #include "tcmgr.h"
+#include "ocpn_plugin.h" 
 
 class Position;
 class TideFinder_pi;
