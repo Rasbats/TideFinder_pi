@@ -339,7 +339,7 @@ void TCWin::OnPaint( wxPaintEvent& event )
             sprintf( sbuf, "%02d", i );
 #ifdef __WXMSW__
             wxString sst;
-            sst.Printf( "%02d",(size_t)i );
+            sst = wxString::Format( "%02d",i );
             dc.DrawRotatedText( sst, xd + ( m_graph_rect.width / 25 ) / 2, m_graph_rect.y + m_graph_rect.height + 8, 270. );
 #else
             int x_shim = -12;
@@ -393,8 +393,8 @@ void TCWin::OnPaint( wxPaintEvent& event )
                         wxDateTime tcd;                                                 //write date
                         wxString s, s1;
                         tcd.Set( tctime + ( m_corr_mins * 60 ) );
-                        s.Printf( tcd.Format( _T("%H:%M  ") ) );
-                        s1.Printf( _T("%05.2f "), tcvalue );                           //write value
+						s = wxString::Format(tcd.Format(_T("%H:%M  ")));                        
+                        s1 = wxString::Format( "%05.2f ", tcvalue );                           //write value
                         s.Append( s1 );
                         s.Append( m_passUnits);
 
@@ -488,7 +488,7 @@ void TCWin::OnPaint( wxPaintEvent& event )
 		int h = m_passOffset / 60;
 		int m = m_passOffset - (h * 60);
 		if (m_graphday.IsDST()) h += 1;
-		//m_stz.Printf(_T("UTC %03d:%02d"), h, m);
+		m_stz = wxString::Format(_T("UTC %03d:%02d"), h, m);
 
 		//    Make the "nice" (for the US) station time-zone string, brutally by hand	
 		if (m_passLat > 20.0) {

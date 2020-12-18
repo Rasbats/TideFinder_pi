@@ -577,8 +577,9 @@ void Dlg::CalcHWLW(int PortCode)
 													  wxDateTime tcd;                                                 //write date
 													  wxString s, s1;
 													  tcd.Set(tctime + (m_corr_mins * 60));
-													  s.Printf(tcd.Format(_T("%H:%M  ")));
-													  s1.Printf(_T("%05.2f "), tcvalue);                           //write value
+													  s = wxString::Format(tcd.Format(_T("%H:%M  ")));
+													  s1 = wxString::Format("%05.2f ", tcvalue);                           //write value
+													
 													  s.Append(s1);
 													  Station_Data *pmsd = pIDX->pref_sta_data;                       //write unit
 													  if (pmsd) s.Append(wxString(pmsd->units_abbrv, wxConvUTF8));
@@ -765,9 +766,9 @@ CalendarDialog::CalendarDialog ( wxWindow * parent, wxWindowID id, const wxStrin
 	sz.SetHeight(150);
 	
 	p.x = 6; p.y = 2;
-	s.Printf(_(" x = %d y = %d\n"), p.x, p.y);
+	s = wxString::Format(" x = %d y = %d\n", p.x, p.y);
 	dimensions.append(s);
-	s.Printf(_(" width = %d height = %d\n"), sz.GetWidth(), sz.GetHeight());
+	s = wxString::Format(" width = %d height = %d\n", sz.GetWidth(), sz.GetHeight());
 	dimensions.append(s);
 	dimensions.append(wxT("here"));
  
