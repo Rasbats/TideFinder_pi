@@ -37,7 +37,7 @@
 #include "wx/dialog.h"
 #include <wx/datetime.h>
 #include "TCWin.h"
-#include "wx/string.h"
+#include <wx/string.h>
 #include <list>
 #include <vector>
 #include "timectrl.h"
