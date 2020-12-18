@@ -624,7 +624,7 @@ void Dlg::MakeLabelDate(int offset, double lat, wxDateTime graphday) {
 	int h = offset / 60;
 	int m = offset - (h * 60);
 	if (graphday.IsDST()) h += 1;
-	m_stz.Printf("UTC %03d:%02d", h, m);
+	m_stz.Printf("UTC %03i %02i", h, m);
 
 	//    Make the "nice" (for the US) station time-zone string, brutally by hand	
 	if (lat > 20.0) {
@@ -651,10 +651,8 @@ void Dlg::MakeLabelDate(int offset, double lat, wxDateTime graphday) {
 	wxString sdate;
 	sdate = graphday.Format(_T("%A %d %b %Y"));
 	wxString labeldate;
-	labeldate = sdate + _T(" (") + m_stz + _T(")");
+	labeldate = sdate + ", " + m_stz + ",";
 	m_staticText3->SetLabel(labeldate);
-
-
 
 }
 
