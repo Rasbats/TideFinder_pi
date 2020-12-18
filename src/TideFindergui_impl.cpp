@@ -614,7 +614,7 @@ int Dlg::FindPortID(wxString myPort)
 			}
 			return 0;
 }
-
+/*
 void Dlg::MakeLabelDate(int offset, double lat, wxDateTime graphday) {
 
 
@@ -654,7 +654,7 @@ void Dlg::MakeLabelDate(int offset, double lat, wxDateTime graphday) {
 
 
 }
-
+*/
 void Dlg::NXEvent( wxCommandEvent& event )
 {	
 	if (outOfRadius) return;

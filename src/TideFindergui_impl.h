@@ -144,7 +144,7 @@ public:
 
 	int station_offset;
 	double station_lat;
-	void MakeLabelDate(int offset, double lat, wxDateTime graphday);
+	//void MakeLabelDate(int offset, double lat, wxDateTime graphday);
 
 private:
 	bool outOfRadius;
