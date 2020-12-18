@@ -97,11 +97,14 @@ function (tarball_target)
     execute_process( COMMAND cmake -P ${CMAKE_BINARY_DIR}/checksum.cmake)
     message(STATUS \"Computing checksum in ${pkg_displayname}.xml\")
   ")
+  message(STATUS "TARBALL_SCRIPT: ${_tarball_script}")
   file(WRITE "${CMAKE_BINARY_DIR}/build_tarball.cmake" "${_tarball_script}")
   add_custom_target(tarball)
+  file(TO_NATIVE_PATH "${CMAKE_BINARY_DIR}/build_tarball.cmake"  _path)
   add_custom_command(
     TARGET tarball      # Compute checksum
-    COMMAND cmake -P ${CMAKE_BINARY_DIR}/build_tarball.cmake
+    COMMAND cmake -P ${_path}
+    COMMENT "Building tarball..."
     VERBATIM
   )
   add_dependencies(tarball tarball-conf)
