@@ -45,11 +45,13 @@
 
 class Position;
 class TideFinder_pi;
+class VMHData;
 class Harmonics;
 class TidalFactors;
 class PortTides;
 class TCWin;
-class TCMgr;
+
+extern wxArrayString    TideCurrentDataSet;
 
 using namespace std;
 // convert degrees to radians  
@@ -515,7 +517,7 @@ void Dlg::OnCalculate(){
 
 	m_t_graphday_00_at_station = t_graphday_00 - (m_corr_mins * 60);
 
-	//MakeLabelDate(station_offset, station_lat, m_graphday);
+	MakeLabelDate(station_offset, station_lat, m_graphday);
 
 	CalcHWLW(intPortNo);  //port_clicked); 	
 }
@@ -615,7 +617,7 @@ int Dlg::FindPortID(wxString myPort)
 			}
 			return 0;
 }
-/*
+
 void Dlg::MakeLabelDate(int offset, double lat, wxDateTime graphday) {
 
 
@@ -649,20 +651,20 @@ void Dlg::MakeLabelDate(int offset, double lat, wxDateTime graphday) {
 	wxString sdate;
 	sdate = graphday.Format(_T("%A %d %b %Y"));
 	wxString labeldate;
-	labeldate = sdate + _T(" ") + m_stz + _T("");
+	labeldate = sdate + _T(" (") + m_stz + _T(")");
 	m_staticText3->SetLabel(labeldate);
 
 
 
 }
-*/
+
 void Dlg::NXEvent( wxCommandEvent& event )
 {	
 	if (outOfRadius) return;
 	wxTimeSpan dt( 24, 0, 0, 0 );
     m_graphday.Add( dt );
 
-	//MakeLabelDate(station_offset, station_lat, m_graphday);
+	MakeLabelDate(station_offset, station_lat, m_graphday);
 
     wxDateTime dm = m_graphday;
     wxDateTime graphday_00 = dm.ResetTime();
@@ -685,7 +687,7 @@ void Dlg::PREvent( wxCommandEvent& event )
 	wxTimeSpan dt( -24, 0, 0, 0 );
     m_graphday.Add( dt );
 
-	//MakeLabelDate(station_offset, station_lat, m_graphday);
+	MakeLabelDate(station_offset, station_lat, m_graphday);
 
     wxDateTime dm = m_graphday;
     wxDateTime graphday_00 = dm.ResetTime();
@@ -710,7 +712,7 @@ void Dlg::OnCalendarShow( wxCommandEvent& event )
 
 		m_graphday = CalDialog.dialogCalendar->GetDate();
 
-		//MakeLabelDate(station_offset, station_lat, m_graphday);
+		MakeLabelDate(station_offset, station_lat, m_graphday);
 
 		wxDateTime dm = m_graphday;
 

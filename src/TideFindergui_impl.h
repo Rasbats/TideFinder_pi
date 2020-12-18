@@ -57,6 +57,7 @@ class TideFinder_pi;
 class StandardPort;
 class Position;
 class Route;
+class VMHData;
 class TCWin;
 class TCMgr;
 class PortTides;
@@ -95,7 +96,9 @@ public:
 
 
         TideFinder_pi *plugin; 
-
+		
+		std::vector<VMHData> my_dataList;
+		std::vector<VMHData> my_LocationList;
 
 
 		void OnContextMenu(double m_lat, double m_lon);
@@ -131,6 +134,7 @@ public:
 	void LoadHarmonics();
 	int FindPortIDUsingChoice(wxString inPortName);
 
+	wxArrayString    TideCurrentDataSet;
 	std::vector<Position>my_positions;
 	std::vector<StandardPort>my_ports;
 	wxString wxPortName[100][5];
@@ -144,7 +148,6 @@ public:
 
 	int station_offset;
 	double station_lat;
-	//void MakeLabelDate(int offset, double lat, wxDateTime graphday);
 
 private:
 	bool outOfRadius;
@@ -153,7 +156,7 @@ private:
 		wxString SelectedPorts[3];
 
 		int FindPortID(wxString myPort);	
-		
+		void MakeLabelDate(int offset, double lat, wxDateTime graphday);
 		int FindNearestPorts(int n);
 
 		void OnStartSetupHW();

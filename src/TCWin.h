@@ -35,7 +35,7 @@
 #include <wx/timer.h>
 #include <wx/list.h>
 #include "tcmgr.h"
-#include "wx/event.h"
+#include <wx/event.h>
 
 class wxCommandEvent;
 class wxCloseEvent;
