@@ -134,7 +134,6 @@ public:
 	void LoadHarmonics();
 	int FindPortIDUsingChoice(wxString inPortName);
 
-	wxArrayString    TideCurrentDataSet;
 	std::vector<Position>my_positions;
 	std::vector<StandardPort>my_ports;
 	wxString wxPortName[100][5];

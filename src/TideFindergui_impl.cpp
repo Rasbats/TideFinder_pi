@@ -51,8 +51,6 @@ class TidalFactors;
 class PortTides;
 class TCWin;
 
-extern wxArrayString    TideCurrentDataSet;
-
 using namespace std;
 // convert degrees to radians  
 static inline double DegToRad(double deg) { return (deg * M_PI) / 180.0; }
