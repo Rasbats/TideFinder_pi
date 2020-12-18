@@ -45,8 +45,6 @@
 
 class Position;
 class TideFinder_pi;
-class VMHData;
-class Harmonics;
 class TidalFactors;
 class PortTides;
 class TCWin;

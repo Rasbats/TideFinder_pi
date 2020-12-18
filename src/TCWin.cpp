@@ -13,7 +13,6 @@
 #include <wx/wxchar.h>
 #include <wx/listimpl.cpp>
 
-class Harmonics;
 class Dlg;
 
 //using namespace std;
