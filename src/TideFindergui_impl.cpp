@@ -732,8 +732,8 @@ void Dlg::OnCalendarShow( wxCommandEvent& event )
 void Dlg::GFEvent(wxCommandEvent& event){
 
 	if (outOfRadius) return;
-	myTCWin = new TCWin(this,100,100, intPortNo, m_PortName, m_t_graphday_00_at_station, m_graphday, station_offset, station_lat, myUnits);
-	myTCWin->Show();
+	//myTCWin = new TCWin(this,100,100, intPortNo, m_PortName, m_t_graphday_00_at_station, m_graphday, station_offset, station_lat, myUnits);
+	//myTCWin->Show();
 
 }
 
