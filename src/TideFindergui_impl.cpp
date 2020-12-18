@@ -514,7 +514,7 @@ void Dlg::OnCalculate(){
 
 	m_t_graphday_00_at_station = t_graphday_00 - (m_corr_mins * 60);
 
-	MakeLabelDate(station_offset, station_lat, m_graphday);
+	//MakeLabelDate(station_offset, station_lat, m_graphday);
 
 	CalcHWLW(intPortNo);  //port_clicked); 	
 }
@@ -661,7 +661,7 @@ void Dlg::NXEvent( wxCommandEvent& event )
 	wxTimeSpan dt( 24, 0, 0, 0 );
     m_graphday.Add( dt );
 
-	MakeLabelDate(station_offset, station_lat, m_graphday);
+	//MakeLabelDate(station_offset, station_lat, m_graphday);
 
     wxDateTime dm = m_graphday;
     wxDateTime graphday_00 = dm.ResetTime();
@@ -684,7 +684,7 @@ void Dlg::PREvent( wxCommandEvent& event )
 	wxTimeSpan dt( -24, 0, 0, 0 );
     m_graphday.Add( dt );
 
-	MakeLabelDate(station_offset, station_lat, m_graphday);
+	//MakeLabelDate(station_offset, station_lat, m_graphday);
 
     wxDateTime dm = m_graphday;
     wxDateTime graphday_00 = dm.ResetTime();
@@ -709,7 +709,7 @@ void Dlg::OnCalendarShow( wxCommandEvent& event )
 
 		m_graphday = CalDialog.dialogCalendar->GetDate();
 
-		MakeLabelDate(station_offset, station_lat, m_graphday);
+		//MakeLabelDate(station_offset, station_lat, m_graphday);
 
 		wxDateTime dm = m_graphday;
 
