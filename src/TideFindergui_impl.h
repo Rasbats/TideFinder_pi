@@ -44,10 +44,8 @@
 #include "TCWin.h"
 #include <wx/listctrl.h>
 #include <list>
-#include <vector>
 #include "tcmgr.h"
 #include <wx/choice.h>
-#include <vector>
 
 
 //using namespace std;
@@ -60,27 +58,6 @@ class VMHData;
 class TCWin;
 class TCMgr;
 class PortTides;
-class RoutePoint
-
-{
-public:
-      RoutePoint(double lat, double lon, const wxString& icon_ident, const wxString& name, bool bAddToList = true);
-      RoutePoint( RoutePoint* orig );
-      RoutePoint();
-      ~RoutePoint(void);      
-      void ReLoadIcon(void);
-
-      wxDateTime GetCreateTime(void);
-      void SetCreateTime( wxDateTime dt );
-      
-      void SetPosition(double lat, double lon);
-      double GetLatitude()  { return m_lat; };
-      double GetLongitude() { return m_lon; };
-	  double m_lat;
-	  double m_lon;
-
-
-};
 
 class CfgDlg : public CfgDlgDef
 {
@@ -101,8 +78,6 @@ public:
 
 
 		void OnContextMenu(double m_lat, double m_lon);
-
-		void SaveHarbourXMLtoDataClass();
 		double distance(double lat1, double lon1, double lat2, double lon2, char unit);
 		double deg2rad(double deg);
 		double rad2deg(double rad);
@@ -149,7 +124,7 @@ public:
 	double station_lat;
 
 private:
-	bool outOfRadius;
+	    bool outOfRadius;
 
 	    PlugIn_Waypoint *myWP;
 		wxString SelectedPorts[3];
