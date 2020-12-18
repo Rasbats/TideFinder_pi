@@ -147,7 +147,8 @@ public:
 
 	int station_offset;
 	double station_lat;
-
+    void MakeLabelDate(int offset, double lat, wxDateTime graphday);
+    
 private:
 	bool outOfRadius;
 
@@ -155,7 +156,7 @@ private:
 		wxString SelectedPorts[3];
 
 		int FindPortID(wxString myPort);	
-		void MakeLabelDate(int offset, double lat, wxDateTime graphday);
+		
 		int FindNearestPorts(int n);
 
 		void OnStartSetupHW();
