@@ -49,6 +49,7 @@ class Harmonics;
 class TidalFactors;
 class PortTides;
 class TCWin;
+class TCMgr;
 
 using namespace std;
 // convert degrees to radians  
