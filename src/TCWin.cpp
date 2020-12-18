@@ -506,7 +506,7 @@ void TCWin::OnPaint( wxPaintEvent& event )
 			}
 
 			if (mtz.Len() > 0) {
-				if (m_graphday.IsDST()) mtz[1] = 'D';
+				if (m_graphday.IsDST()) mtz = 'D';
 
 				m_stz = mtz;
 			}
