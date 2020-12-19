@@ -37,19 +37,15 @@
 #include "wx/dialog.h"
 #include <wx/datetime.h>
 #include "TCWin.h"
-#include <wx/string.h>
+#include "wx/string.h"
 #include <list>
 #include <vector>
 #include "timectrl.h"
 #include "tcmgr.h"
-#include "ocpn_plugin.h" 
 
 class Position;
 class TideFinder_pi;
-class TidalFactors;
-class PortTides;
 class TCWin;
-class CalendarDialog;
 
 extern wxArrayString    TideCurrentDataSet;
 
@@ -577,9 +573,8 @@ void Dlg::CalcHWLW(int PortCode)
 													  wxDateTime tcd;                                                 //write date
 													  wxString s, s1;
 													  tcd.Set(tctime + (m_corr_mins * 60));
-													  s = wxString::Format(tcd.Format(_T("%H:%M  ")));
-													  s1 = wxString::Format("%05.2f ", tcvalue);                           //write value
-													
+													  s.Printf(tcd.Format(_T("%H:%M  ")));
+													  s1.Printf(_T("%05.2f "), tcvalue);                           //write value
 													  s.Append(s1);
 													  Station_Data *pmsd = pIDX->pref_sta_data;                       //write unit
 													  if (pmsd) s.Append(wxString(pmsd->units_abbrv, wxConvUTF8));
@@ -625,10 +620,7 @@ void Dlg::MakeLabelDate(int offset, double lat, wxDateTime graphday) {
 	int h = offset / 60;
 	int m = offset - (h * 60);
 	if (graphday.IsDST()) h += 1;
-
-
-
-	m_stz = "test";
+	m_stz.Printf(_T("UTC %+03d:%02d"), h, m);
 
 	//    Make the "nice" (for the US) station time-zone string, brutally by hand	
 	if (lat > 20.0) {
@@ -645,7 +637,7 @@ void Dlg::MakeLabelDate(int offset, double lat, wxDateTime graphday) {
 			break;
 		}
 
-		if (mtz.Len() > 0) {
+		if (mtz.Len()) {
 			if (graphday.IsDST()) mtz = 'D';
 
 			m_stz = mtz;
@@ -655,8 +647,10 @@ void Dlg::MakeLabelDate(int offset, double lat, wxDateTime graphday) {
 	wxString sdate;
 	sdate = graphday.Format(_T("%A %d %b %Y"));
 	wxString labeldate;
-	labeldate = sdate + ", " + m_stz + ",";
+	labeldate = sdate + _T(" (") + m_stz + _T(")");
 	m_staticText3->SetLabel(labeldate);
+
+
 
 }
 
@@ -733,8 +727,8 @@ void Dlg::OnCalendarShow( wxCommandEvent& event )
 void Dlg::GFEvent(wxCommandEvent& event){
 
 	if (outOfRadius) return;
-	//myTCWin = new TCWin(this,100,100, intPortNo, m_PortName, m_t_graphday_00_at_station, m_graphday, station_offset, station_lat, myUnits);
-	//myTCWin->Show();
+	TCWin *myTCWin = new TCWin(this,100,100, intPortNo, m_PortName, m_t_graphday_00_at_station, m_graphday, station_offset, station_lat, myUnits);
+	myTCWin->Show();
 
 }
 
@@ -766,9 +760,9 @@ CalendarDialog::CalendarDialog ( wxWindow * parent, wxWindowID id, const wxStrin
 	sz.SetHeight(150);
 	
 	p.x = 6; p.y = 2;
-	s = wxString::Format(" x = %d y = %d\n", p.x, p.y);
+	s.Printf(_(" x = %d y = %d\n"), p.x, p.y);
 	dimensions.append(s);
-	s = wxString::Format(" width = %d height = %d\n", sz.GetWidth(), sz.GetHeight());
+	s.Printf(_(" width = %d height = %d\n"), sz.GetWidth(), sz.GetHeight());
 	dimensions.append(s);
 	dimensions.append(wxT("here"));
  

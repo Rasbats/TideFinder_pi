@@ -36,6 +36,7 @@
 #include "TideFindergui.h"
 #include "TideFinder_pi.h"
 #include "NavFunc.h"
+#include "tinyxml.h"
 #include "wx/math.h"
 #include "wx/dialog.h"
 #include <wx/calctrl.h>
@@ -44,20 +45,18 @@
 #include "TCWin.h"
 #include <wx/listctrl.h>
 #include <list>
+#include <vector>
 #include "tcmgr.h"
 #include <wx/choice.h>
+#include <vector>
 
 
 //using namespace std;
 
 class TideFinder_pi;
-class StandardPort;
 class Position;
-class Route;
-class VMHData;
 class TCWin;
 class TCMgr;
-class PortTides;
 
 class CfgDlg : public CfgDlgDef
 {
@@ -72,11 +71,6 @@ public:
 
 
         TideFinder_pi *plugin; 
-		
-		std::vector<VMHData> my_dataList;
-		std::vector<VMHData> my_LocationList;
-
-
 		void OnContextMenu(double m_lat, double m_lon);
 		double distance(double lat1, double lon1, double lat2, double lon2, char unit);
 		double deg2rad(double deg);
@@ -102,15 +96,9 @@ public:
     wxDateTime  m_graphday;
 	time_t myTime;
 	
-	bool LoadStandardPorts();
-	PortTides PopulatePortTides(wxString PortName);
-
 	void LoadHarmonics();
-	int FindPortIDUsingChoice(wxString inPortName);
-
 	wxArrayString    TideCurrentDataSet;
 	std::vector<Position>my_positions;
-	std::vector<StandardPort>my_ports;
 	wxString wxPortName[100][5];
 	wxString selectedPort;
 	int intPortNo;
@@ -124,7 +112,7 @@ public:
 	double station_lat;
 
 private:
-	    bool outOfRadius;
+	bool outOfRadius;
 
 	    PlugIn_Waypoint *myWP;
 		wxString SelectedPorts[3];
@@ -166,49 +154,14 @@ private:
 
 };
 
-
-class VMHData
-{
-public:
-    double latD, lonD;
-    wxString lat, lon;
-    VMHData *prev, *next; /* doubly linked circular list of positions */
-    wxString location;
-	wxString name;
-	wxString portno;
-	wxString M2H;
-};
-
 class Position
 {
 public:
 	double latD, lonD;
     wxString lat, lon;
-	wxString stat_num, port_num;
-	wxString minus_plus[12];
-		
-	wxString minus_6, minus_5, minus_4, minus_3 ,minus_2, minus_1, zero;
-	wxString plus_1, plus_2,  plus_3, plus_4, plus_5, plus_6;
+	wxString stat_num, port_num;		
     Position *prev, *next; /* doubly linked circular list of positions */
 };
-
-class PortTides
-{
-public:
-
-	wxString m_portID, m_portName, m_IDX;
-	double m_spRange, m_npRange;
-
-};
-
-
-class StandardPort
-{
-public:
-	wxString PORT_NUMBER,PORT_NAME,MEAN_SPRING_RANGE,MEAN_NEAP_RANGE,EXTRA,IDX;
-};
-
-
 
 class CalendarDialog: public wxDialog
 {
@@ -218,18 +171,13 @@ public:
 	              const wxPoint & pos = wxDefaultPosition,
 	              const wxSize & size = wxDefaultSize,
 	              long style = wxDEFAULT_DIALOG_STYLE );
- 
-	//wxTextCtrl * dialogText;
-	wxCalendarCtrl* dialogCalendar; 
 
+	wxCalendarCtrl* dialogCalendar; 
 	wxStaticText *m_staticText; 
 	wxTimePickerCtrl *_timeCtrl;
-	
-	wxString GetText();
 
 private:
- 
-	void OnOk( wxCommandEvent & event );
+
 
 };
 
@@ -243,11 +191,9 @@ public:
 	              long style = wxDEFAULT_DIALOG_STYLE );
  
 	wxListView * dialogText;
-	wxString GetText();
  
 private:
  
-	void OnOk( wxCommandEvent & event );
 
 };
 

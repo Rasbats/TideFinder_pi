@@ -11,28 +11,23 @@
 #include <wx/graphics.h>
 #include "tcmgr.h"
 #include <wx/wxchar.h>
-#include <wx/listimpl.cpp>
 
 class Dlg;
-class CalendarDialog;
-
-//using namespace std;
-
 
 enum
 {
-      ID_TCWIN_NX,
-      ID_TCWIN_PR
+	ID_TCWIN_NX,
+	ID_TCWIN_PR
 };
 
 enum
 {
-            FORWARD_ONE_HOUR_STEP    =3600,
-            FORWARD_TEN_MINUTES_STEP =600,
-            FORWARD_ONE_MINUTES_STEP =60,
-            BACKWARD_ONE_HOUR_STEP    =-3600,
-            BACKWARD_TEN_MINUTES_STEP =-600,
-            BACKWARD_ONE_MINUTES_STEP =-60
+	FORWARD_ONE_HOUR_STEP = 3600,
+	FORWARD_TEN_MINUTES_STEP = 600,
+	FORWARD_ONE_MINUTES_STEP = 60,
+	BACKWARD_ONE_HOUR_STEP = -3600,
+	BACKWARD_TEN_MINUTES_STEP = -600,
+	BACKWARD_ONE_MINUTES_STEP = -60
 };
 
 enum
@@ -40,7 +35,7 @@ enum
       TIDE_PLOT
 };
 
-
+#include <wx/listimpl.cpp>
 WX_DEFINE_LIST( SplineList );
 
 BEGIN_EVENT_TABLE ( TCWin, wxWindow ) EVT_PAINT ( TCWin::OnPaint )
@@ -71,8 +66,7 @@ TCWin::TCWin( wxWindow * parent, int x, int y, int PortNo, wxString PortName, in
     //    This way, any window decorations set by external themes, etc
     //    will not detract from night-vision
 	long wstyle = wxCLIP_CHILDREN | wxDEFAULT_DIALOG_STYLE|wxSIMPLE_BORDER ;
-
-   
+ 
     wxDialog::Create( parent, wxID_ANY, wxString( _T ( "test" ) ), wxPoint( x, y ),
                       wxSize( 550, 480 ), wstyle );
 
@@ -82,7 +76,7 @@ TCWin::TCWin( wxWindow * parent, int x, int y, int PortNo, wxString PortName, in
 
 
     SetTitle( wxString( _( "Tide Finder" ) ) );
-	 m_plot_type = TIDE_PLOT;
+	m_plot_type = TIDE_PLOT;
 
 
     int sx, sy;
@@ -213,7 +207,6 @@ TCWin::TCWin( wxWindow * parent, int x, int y, int PortNo, wxString PortName, in
    m_ptextctrl->SetFont( *pVLFont );
    m_ptextctrl->SetForegroundColour(c_black1);
    m_ptextctrl->SetBackgroundColour(c_blue);
-   //m_ptextctrl->SetLabel(wxT("DOVER"));
 
 }
 
@@ -339,7 +332,7 @@ void TCWin::OnPaint( wxPaintEvent& event )
             sprintf( sbuf, "%02d", i );
 #ifdef __WXMSW__
             wxString sst;
-            sst = wxString::Format( "%02d",i );
+            sst.Printf( _T("%02d"), i );
             dc.DrawRotatedText( sst, xd + ( m_graph_rect.width / 25 ) / 2, m_graph_rect.y + m_graph_rect.height + 8, 270. );
 #else
             int x_shim = -12;
@@ -393,8 +386,8 @@ void TCWin::OnPaint( wxPaintEvent& event )
                         wxDateTime tcd;                                                 //write date
                         wxString s, s1;
                         tcd.Set( tctime + ( m_corr_mins * 60 ) );
-						s = wxString::Format(tcd.Format(_T("%H:%M  ")));                        
-                        s1 = wxString::Format( "%05.2f ", tcvalue );                           //write value
+                        s.Printf( tcd.Format( _T("%H:%M  ") ) );
+                        s1.Printf( _T("%05.2f "), tcvalue );                           //write value
                         s.Append( s1 );
                         s.Append( m_passUnits);
 
@@ -488,7 +481,7 @@ void TCWin::OnPaint( wxPaintEvent& event )
 		int h = m_passOffset / 60;
 		int m = m_passOffset - (h * 60);
 		if (m_graphday.IsDST()) h += 1;
-		m_stz = wxString::Format(_T("UTC %03d:%02d"), h, m);
+		m_stz.Printf(_T("UTC %+03d:%02d"), h, m);
 
 		//    Make the "nice" (for the US) station time-zone string, brutally by hand	
 		if (m_passLat > 20.0) {
@@ -505,7 +498,7 @@ void TCWin::OnPaint( wxPaintEvent& event )
 				break;
 			}
 
-			if (mtz.Len() > 0) {
+			if (mtz.Len()) {
 				if (m_graphday.IsDST()) mtz = 'D';
 
 				m_stz = mtz;
