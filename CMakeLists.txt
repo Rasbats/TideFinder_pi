@@ -56,7 +56,7 @@ option(TIDEFINDER_USE_SVG "Use SVG graphics" ON)
 
 # -------  Plugin setup --------
 #
-project(TideFinder_pi VERSION 1.2.0)
+project(TideFinder_pi VERSION 1.2.1)
 
 set(DISPLAY_NAME TideFinder)    # Dialogs, installer artifacts, ...
 set(PLUGIN_API_NAME TideFinder) # As of GetCommonName() in plugin API
