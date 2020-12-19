@@ -57,7 +57,8 @@ build_script:
   - mkdir build
   - cd build
   - cmake -T v141_xp ..
-  - cmake --build . --target tarball --config Release ..
+  - cmake -G "Visual Studio 15 2017" --config Release  ..
+  - cmake --build . --target tarball --config Release
   - cmd: upload.bat
   - py ..\ci\git-push
 
