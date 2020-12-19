@@ -9,7 +9,9 @@ platform:
 # - x64
 - Win32
 
-configuration: Release
+configuration:
+  - Release
+  
 test: OFF
 
 install:
