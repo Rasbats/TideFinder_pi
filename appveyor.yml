@@ -9,7 +9,7 @@ platform:
 # - x64
 - Win32
 
-configuration: RelWithDebInfo
+configuration: Release
 test: OFF
 
 install:
@@ -55,8 +55,8 @@ build_script:
   - mkdir build
   - cd build
   - cmake -T v141_xp ..
-  - cmake -G "Visual Studio 15 2017" --config release  ..
-  - cmake --build . --target tarball --config release
+  - cmake -G "Visual Studio 15 2017" --config Release  ..
+  - cmake --build . --target tarball --config Release
   - cmd: upload.bat
   - py ..\ci\git-push
 
