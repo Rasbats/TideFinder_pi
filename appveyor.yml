@@ -9,9 +9,7 @@ platform:
 # - x64
 - Win32
 
-configuration:
-  - RelWithDebInfo
-  
+configuration: RelWithDebInfo
 test: OFF
 
 install:
@@ -56,8 +54,7 @@ before_build:
 build_script:
   - mkdir build
   - cd build
-  - cmake -T v141_xp ..
-  - cmake -G "Visual Studio 15 2017" --config RelWithDebInfo  ..
+  - cmake -T v141_xp -G cmake -G "Visual Studio 15 2017" --config RelWithDebInfo  ..
   - cmake --build . --target tarball --config RelWithDebInfo
   - cmd: upload.bat
   - py ..\ci\git-push
