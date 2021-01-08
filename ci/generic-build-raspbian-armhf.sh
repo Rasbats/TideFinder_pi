@@ -32,12 +32,10 @@ cat > build.sh << "EOF"
 curl http://mirrordirector.raspbian.org/raspbian.public.key  | apt-key add -
 curl http://archive.raspbian.org/raspbian.public.key  | apt-key add -
 sudo apt -q update
-sudo apt-get -y install --no-install-recommends \
-   build-essential cmake file gettext git \
-   libarchive-dev libbz2-dev libcairo2-dev \
-   libcurl4-openssl-dev libexif-dev libexpat1-dev \
-   libgtk2.0-dev libjsoncpp-dev libtinyxml-dev liblzma-dev \
-   libwxgtk3.0-dev lsb-release wx-common
+
+sudo apt install devscripts equivs
+sudo mk-build-deps -ir /ci-source/build-deps/control-raspbian
+sudo apt-get -q --allow-unauthenticated install -f
 
 cd /ci-source
 rm -rf build; mkdir build; cd build
@@ -62,5 +60,5 @@ python3 -m pip install --upgrade pip
 python3 -m pip install --user cloudsmith-cli
 python3 -m pip install --user cryptography
 
-# python install scripts in ~/.local/bin:
+# python install scripts in ~/.local/bin, teach upload.sh to use it in PATH:
 echo 'export PATH=$PATH:$HOME/.local/bin' >> ~/.uploadrc

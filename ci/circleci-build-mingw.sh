@@ -33,11 +33,11 @@ docker run --privileged -d -ti -e "container=docker"  \
 DOCKER_CONTAINER_ID=$(docker ps | awk '/fedora/ {print $1}')
 docker logs $DOCKER_CONTAINER_ID
 
-
+# Create the  fedora build script
 cat > build.sh << "EOF"
 su -c "dnf install -q -y sudo dnf-plugins-core"
 sudo dnf -y copr enable leamas/opencpn-mingw
-sudo dnf -q builddep  -y /project/mingw/fedora/opencpn-deps.spec
+sudo dnf -q builddep  -y /project/build-deps/opencpn-deps.spec
 cd /project
 rm -rf build; mkdir build; cd build
 cmake \
@@ -68,5 +68,5 @@ python3 -m pip install --user cloudsmith-cli
 # Required by git-push
 python3 -m pip install --user cryptography
 
-# python install scripts in ~/.local/bin:
+# python install scripts in ~/.local/bin, teach upload.sh to use it in PATH:
 echo 'export PATH=$PATH:$HOME/.local/bin' >> ~/.uploadrc
