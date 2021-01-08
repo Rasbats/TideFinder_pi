@@ -110,8 +110,6 @@ if (TIDEFINDER_USE_SVG)
   add_definitions(-DTIDEFINDER_USE_SVG)
 endif ()
 
-add_definitions(-DWXUSINGDLL)
-
 # Set up targets. Targets sets up a recursive call with BUILD_TYPE set to
 # 'flatpak', 'pkg' or 'tarball'. The initial call without BUILD_TYPE ends
 # here.
@@ -142,6 +140,11 @@ if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
   add_subdirectory("libs/wxJSON")
   target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
 endif ()
+
+configure_file(
+  ${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_BINARY_DIR}/include/config.h
+  @ONLY
+)
 
 configure_file(
   # The cloudsmith upload script
