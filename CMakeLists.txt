@@ -63,7 +63,7 @@ set(PLUGIN_API_NAME TideFinder) # As of GetCommonName() in plugin API
 set(CPACK_PACKAGE_CONTACT "Mike Rossiter")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Easy tide prediction for future dates")
 set(CPACK_PACKAGE_DESCRIPTION [=[
-"Simplifies the prediction of tides for dates in the future. \nSelects the tidal stations within the area of the vessel"
+Simplifies the prediction of tides for dates in the future. Selects the tidal stations within the area of the vessel
 ]=])
 
 set(PKG_RELEASE "1")
