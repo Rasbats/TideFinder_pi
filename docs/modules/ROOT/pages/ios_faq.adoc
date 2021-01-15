@@ -1,4 +1,4 @@
-= iOS App FAQ
+= TideFinder App FAQ
 :toc: right
 
 [[enabling-background-instant-upload-requires-the-owncloud-client-to-have-access-to-location-services]]
