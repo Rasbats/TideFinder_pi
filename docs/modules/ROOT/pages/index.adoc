@@ -27,6 +27,3 @@ image:ios-slider.png[Slide filename right to expose management options.]
 
 image:ios-file-squirrel.png[Squirrel image in the iOS app]
 
-[[downloading-files]]
-== Downloading Files
-
