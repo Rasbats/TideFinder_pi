@@ -6,7 +6,7 @@
 
 OpenCPN makes it easy to find the tidal predictions for the current date/time. If predictions are needed for some date in the future a lot of 'Next' button pushes are needed. Using the plugin the calendar can be used to find a date in the future.
 
-* A limited number of ports are show, closest to your location.
+* A limited number of ports are shown, closest to your location.
 * Calendar for selecting dates
 * The same information as the main program offers.
 
