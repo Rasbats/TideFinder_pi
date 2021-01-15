@@ -12,7 +12,7 @@ OpenCPN makes it easy to find the tidal predictions for the current date/time. I
 
 
 
-[[Getting the TideFinder plugin]]
+[[Getting-plugin]]
 == Getting the TideFinder plugin
 
 With the main program open select Options. Then choose plugins. Select the Beta catalog. Update the Beta catalog. At the bottom of the list of Beta plugins that are available is TideFinder. Press Install. After installation enable the plugin, with a tick in the box.
