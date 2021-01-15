@@ -1,25 +1,19 @@
-= Using the ownCloud iOS App
+= Using the TideFinder plugin
 :toc: right
 :experimental:
 
 == Introduction
 
-Accessing your files on your ownCloud server via the Web interface is easy and convenient, as you can use any Web browser on any operating system without installing special client software. 
-However, the ownCloud iOS app offers some advantages over the Web interface:
+OpenCPN makes it easy to find the tidal predictions for the current date/time. If predictions are needed for some date in the future a lot of 'Next' button pushes are needed. Using the plugin the calendar can be used to find a date in the future.
 
-* A simplified interface that fits nicely on an iPhone or iPad
-* Automatic synchronization of your files
-* Share files with other ownCloud users
-* Easily upload files from your device to ownCloud
-* Optional PIN for stronger security
+* A limited number of ports are show, closest to your location.
+* Calendar for selecting dates
+* The same information as the main program offers.
 
-[[getting-the-owncloud-ios-app]]
-== Getting the ownCloud iOS App
+[[Gettin the plugin]]
+== Getting the TideFinder plugin
 
-Open Safari, or any Web browser, and point it to your ownCloud server. 
-Log in and look on your Personal page for a link to the ownCloud app on iTunes. 
-When you install the ownCloud app and open it you’ll be prompted for your ownCloud server URL and login. 
-When it connects it opens to your Files page.
+With the main program open select Options. Then choose plugins. Select the Beta catalog. Update the Beta catalog. At the bottom of the list of Beta plugins that are available is TideFinder. Press Install.
 
 image:ios-files-list.png[Files listing.]
 
