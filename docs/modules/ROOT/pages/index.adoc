@@ -10,6 +10,8 @@ OpenCPN makes it easy to find the tidal predictions for the current date/time. I
 * Calendar for selecting dates
 * The same information as the main program offers.
 
+
+
 [[Getting the TideFinder plugin]]
 == Getting the TideFinder plugin
 
