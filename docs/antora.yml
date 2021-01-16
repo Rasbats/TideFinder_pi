@@ -1,5 +1,5 @@
-name: ios
-title: Mobile App for iOS (Legacy)
+name: TideFinder
+title: TideFinder plugin for OpenCPN
 version: master
 start_page: ROOT:index.adoc
 nav:
