@@ -10,8 +10,8 @@ content:
 ui:
   output_dir: assets
   bundle:
+    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/master/raw/build/ui-bundle.zip?job=bundle-stable
     snapshot: true
-    url: https://minio.owncloud.com/documentation/ui-bundle.zip
 
 output:
   clean: true
