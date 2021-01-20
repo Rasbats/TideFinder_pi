@@ -1,9 +1,8 @@
-# ~~~
-# Author:      Rasbats aka. Mike Rossiter
-# Copyright:
-# License:     wxWidgets License
-# ~~~
-
+##---------------------------------------------------------------------------
+## Author:      Rasbats aka. Mike Rossiter
+## Copyright:
+## License:     wxWidgets License
+##---------------------------------------------------------------------------
 # -------- Cmake setup ---------
 #
 cmake_minimum_required(VERSION 3.5.1)
@@ -52,18 +51,20 @@ set(OCPN_RELEASE_REPO
     CACHE STRING 
     "Default repository for tagged builds not matching 'beta'"
 )
+
 option(TIDEFINDER_USE_SVG "Use SVG graphics" ON)
 
 # -------  Plugin setup --------
 #
-project(TideFinder_pi VERSION 1.3.2)
+project(TideFinder_pi VERSION 1.4.0)
 
 set(DISPLAY_NAME TideFinder)    # Dialogs, installer artifacts, ...
 set(PLUGIN_API_NAME TideFinder) # As of GetCommonName() in plugin API
 set(CPACK_PACKAGE_CONTACT "Mike Rossiter")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Easy tide prediction for future dates")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Predict future tides")
 set(CPACK_PACKAGE_DESCRIPTION [=[
-Simplifies the prediction of tides for dates in the future. Selects the tidal stations within the area of the vessel
+Extends the tidal predictions of OpenCPN using a calendar to allow 
+easier future predictions.
 ]=])
 
 set(PKG_RELEASE "1")
@@ -88,11 +89,10 @@ SET(SRC_TIDEFINDER
             src/timectrl.cpp
     )
 
-
 # -------- Setup completed, build the plugin --------
 #
-add_library(${CMAKE_PROJECT_NAME} SHARED ${SRC_TIDEFINDER})
-include_directories(${CMAKE_BINARY_DIR}/include)
+add_library(${CMAKE_PROJECT_NAME} SHARED ${SRC})
+include_directories(BEFORE ${CMAKE_BINARY_DIR}/include)
 
 add_subdirectory("libs/api-16")
 target_link_libraries(${CMAKE_PROJECT_NAME} ocpn::api)
@@ -106,9 +106,10 @@ set(PACKAGE_NAME ${CMAKE_PROJECT_NAME})
 string(REGEX REPLACE "\([0-9]\)\.\([0-9]\).*" "ov\\1\\2"
        OCPN_MIN_VERSION ${API_OCPN_MIN_VERSION})
 
+
 if (TIDEFINDER_USE_SVG)
   add_definitions(-DTIDEFINDER_USE_SVG)
-endif ()
+endif
 
 # Set up targets. Targets sets up a recursive call with BUILD_TYPE set to
 # 'flatpak', 'pkg' or 'tarball'. The initial call without BUILD_TYPE ends
@@ -142,7 +143,7 @@ if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
 endif ()
 
 configure_file(
-  ${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_BINARY_DIR}/include/config.h
+  ${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_BINARY_DIR}/include//config.h
   @ONLY
 )
 
@@ -156,6 +157,7 @@ configure_file(
   ${CMAKE_SOURCE_DIR}/ci/upload.bat.in ${CMAKE_BINARY_DIR}/upload.bat
   @ONLY
 )
+
 
 set(checksum "@checksum@")
 configure_file(

@@ -35,10 +35,14 @@
   #include <wx/glcanvas.h>
 #endif //precompiled headers
 
-#include "config.h"
 #include <wx/fileconf.h>
 #include "ocpn_plugin.h" //Required for OCPN plugin functions
 #include "TideFindergui_impl.h"
+
+#include "version.h"
+
+#define     MY_API_VERSION_MAJOR    1
+#define     MY_API_VERSION_MINOR    10
 
 class Dlg;
 
@@ -48,7 +52,7 @@ class Dlg;
 
 #define TIDEFINDER_TOOL_POSITION    -1          // Request default positioning of toolbar tool
 
-class TideFinder_pi : public opencpn_plugin_116
+class TideFinder_pi : public opencpn_plugin_110
 {
 public:
       TideFinder_pi(void *ppimgr);

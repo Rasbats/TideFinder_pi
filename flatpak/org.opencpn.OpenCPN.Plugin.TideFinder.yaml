@@ -13,11 +13,11 @@ finish-args:
     - --device=all
 
 modules:
-    - name: TideFinder
+    - name: shipdriver
       no-autogen: true
       buildsystem: cmake
       config-opts:
-          - -DCMAKE_INSTALL_PREFIX=/app/extensions/TideFinder/
+          - -DCMAKE_INSTALL_PREFIX=/app/extensions/shipdriver/
           - -DCMAKE_BUILD_TYPE:STRING=Release
           - -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
           - -DBUILD_TYPE:STRING=tarball

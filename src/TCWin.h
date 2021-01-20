@@ -43,6 +43,10 @@ class wxTextCtrl;
 class wxButton;
 class wxListBox;
 
+//class Harmonics;
+//class TidalFactors;
+//class SCV;
+
 class Dlg;
 
 //using namespace std;
@@ -101,13 +105,13 @@ private:
       int         ib;
       int         it;
       int         val_off;
-      wxRect      m_graph_rect;
+      wxRect    m_graph_rect;
 
 
       float       tcv[26];
 	  wxListBox  *m_tList ;
       bool        btc_valid;
-      wxWindow   *pParent;
+      wxWindow *pParent;
       int         m_corr_mins;
       wxString    m_stz;
       int         m_t_graphday_00_at_station;

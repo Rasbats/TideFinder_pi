@@ -45,6 +45,10 @@
 
 class Position;
 class TideFinder_pi;
+class VMHData;
+class Harmonics;
+class TidalFactors;
+class PortTides;
 class TCWin;
 
 extern wxArrayString    TideCurrentDataSet;
@@ -638,7 +642,7 @@ void Dlg::MakeLabelDate(int offset, double lat, wxDateTime graphday) {
 		}
 
 		if (mtz.Len()) {
-			if (graphday.IsDST()) mtz = 'D';
+			if (graphday.IsDST()) mtz[1] = 'D';
 
 			m_stz = mtz;
 		}

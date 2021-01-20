@@ -4,7 +4,6 @@ matrix:
   include:
   - env:
     - OCPN_TARGET=stretch-armhf
-    - OCPN_BRANCH=master
     - DOCKER_IMAGE=balenalib/raspberry-pi-debian:stretch
     services:
     - docker

@@ -51,6 +51,14 @@ else ()
   set(_cs_command "cmake -E sha256sum" )
 endif ()
 
+# Command to remove directory
+if (${CMAKE_MAJOR_VERSION} LESS 3 OR ${CMAKE_MINOR_VERSION} LESS 17)
+  set(_rmdir_cmd "remove_directory")
+else ()
+  set(_rmdir_cmd "rm -rf" )
+endif ()
+
+
 # Cmake batch file to compute and patch metadata checksum
 #
 set(_cs_script "
@@ -92,10 +100,13 @@ function (tarball_target)
   add_custom_target(tarball-install)
   add_custom_command(TARGET tarball-install COMMAND ${_install_cmd})
 
+
   set(_finish_script "
     execute_process(
-      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/app
-      COMMAND cmake -E rename files ${pkg_displayname}
+      COMMAND cmake -E ${_rmdir_cmd} app/${pkg_displayname}
+    )
+     execute_process(
+      COMMAND cmake -E rename app/files app/${pkg_displayname}
     )
     execute_process(
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/app
@@ -144,7 +155,7 @@ function (flatpak_target manifest)
     )
     execute_process(
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/app
-      COMMAND mv files ${pkg_displayname}
+      COMMAND mv -fT files ${pkg_displayname}
     )
     execute_process(
       WORKING_DIRECTORY  ${CMAKE_BINARY_DIR}/app

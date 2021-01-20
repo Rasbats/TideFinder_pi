@@ -239,7 +239,7 @@ TCMgr::TCMgr(const wxString &data_dir, const wxString &home_dir)
       fclose(fp);
 
 //    Load the Master Station Data Cache file
-     // LoadMRU();
+      LoadMRU();
 
       bTCMReady = true;
 
@@ -247,9 +247,9 @@ TCMgr::TCMgr(const wxString &data_dir, const wxString &home_dir)
 
 TCMgr::~TCMgr()
 {
-   //SaveMRU();
+   SaveMRU();
 
-   //FreeMRU();
+   FreeMRU();
 
    if(userfile_name)
       free(userfile_name);
@@ -279,7 +279,7 @@ TCMgr::~TCMgr()
 
 }
 
-/*
+
 void TCMgr::LoadMRU(void)
 {
       wxString str;
@@ -379,8 +379,8 @@ void TCMgr::LoadMRU(void)
             }
       }
  }
-*/
-/*
+
+
 void TCMgr::FreeMRU()
 {
       Station_Data *psd;
@@ -410,8 +410,8 @@ void TCMgr::FreeMRU()
 
       }
 }
-*/
-/*
+
+
 void TCMgr::AddMRU(Station_Data *psd)
 {
             mru_entry *pmru_entry = (mru_entry *)malloc(sizeof(mru_entry));
@@ -432,9 +432,9 @@ void TCMgr::AddMRU(Station_Data *psd)
 
             pmru_next = pmru_entry;
 }
-*/
 
-/*
+
+
 void TCMgr::SaveMRU(void)
 {
       wxString str_sbuf;
@@ -484,7 +484,7 @@ void TCMgr::SaveMRU(void)
             mru_file.Write();
       }
 }
-*/
+
 int TCMgr::GetNextBigEvent (time_t *tm, int idx)
 {
    float tcvalue[1]; float dir; bool ret;
@@ -1023,7 +1023,7 @@ Station_Data *TCMgr::find_or_load_harm_data(IDX_entry *pIDX)
                 plast_reference_not_found->Append(wxString(pIDX->IDX_reference_name, wxConvUTF8));
 
             if(psd)
-                  //AddMRU(psd);                                    // add it to the list
+                  AddMRU(psd);                                    // add it to the list
 
             pIDX->pref_sta_data = psd;                // save for later
             return psd;

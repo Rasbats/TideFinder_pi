@@ -224,10 +224,10 @@ private:
 
       bool init_idx_array(void);
 
-      //void LoadMRU(void);
-      //void SaveMRU(void);
-      //void AddMRU(Station_Data *psd);
-      //void FreeMRU(void);
+      void LoadMRU(void);
+      void SaveMRU(void);
+      void AddMRU(Station_Data *psd);
+      void FreeMRU(void);
 
 
       int build_IDX_entry(IDX_entry *pIDX );

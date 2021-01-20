@@ -34,7 +34,6 @@
 #include "TideFinder_pi.h"
 #include "TideFindergui_impl.h"
 #include "TideFindergui.h"
-#include "ocpn_plugin.h" 
 
 
 class TideFinder_pi;
@@ -66,32 +65,20 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
 //---------------------------------------------------------------------------------------------------------
 
 TideFinder_pi::TideFinder_pi(void *ppimgr)
-	:opencpn_plugin_116(ppimgr)
+      :opencpn_plugin_110 (ppimgr)
 {
-	// Create the PlugIn icons
-	initialize_images();
+      // Create the PlugIn icons
+      initialize_images();
 
-	wxFileName fn;
-
-	auto path = GetPluginDataDir("TideFinder_pi");
-	fn.SetPath(path);
-	fn.AppendDir("data");
-	fn.SetFullName("tidefinder_panel_icon.png");
-
-	path = fn.GetFullPath();
-
-	wxInitAllImageHandlers();
-
-	wxLogDebug(wxString("Using icon path: ") + path);
-	if (!wxImage::CanRead(path)) {
-		wxLogDebug("Initiating image handlers.");
-		wxInitAllImageHandlers();
-	}
-	wxImage panelIcon(path);
-	if (panelIcon.IsOk())
-		m_panelBitmap = wxBitmap(panelIcon);
-	else
-		wxLogWarning("TideFinder panel icon has NOT been loaded");	
+	  wxString shareLocn = *GetpSharedDataLocation() +
+		  _T("plugins") + wxFileName::GetPathSeparator() +
+		  _T("tidefinder_pi") + wxFileName::GetPathSeparator()
+		  + _T("data") + wxFileName::GetPathSeparator();
+	  wxImage panelIcon(shareLocn + _T("tidefinder_panel_icon.png"));
+	  if (panelIcon.IsOk())
+		  m_panelBitmap = wxBitmap(panelIcon);
+	  else
+		  wxLogMessage(_T(" tidefinder_pi panel icon NOT loaded"));
 
 	  m_bShowTideFinder = false;
 }
@@ -176,14 +163,12 @@ bool TideFinder_pi::DeInit(void)
 
 int TideFinder_pi::GetAPIVersionMajor()
 {
-	return atoi(API_VERSION);
+      return MY_API_VERSION_MAJOR;
 }
 
 int TideFinder_pi::GetAPIVersionMinor()
 {
-	std::string v(API_VERSION);
-	size_t dotpos = v.find('.');
-	return atoi(v.substr(dotpos + 1).c_str());
+      return MY_API_VERSION_MINOR;
 }
 
 int TideFinder_pi::GetPlugInVersionMajor()
