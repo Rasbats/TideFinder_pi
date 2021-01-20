@@ -70,7 +70,7 @@ easier future predictions.
 set(PKG_RELEASE "1")
 set(PKG_AUTHOR "Mike Rossiter")
 
-SET(SRC_TIDEFINDER
+SET(SRC
             src/TideFinder_pi.h
             src/TideFinder_pi.cpp
             src/icons.h
@@ -143,7 +143,7 @@ if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
 endif ()
 
 configure_file(
-  ${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_BINARY_DIR}/include//config.h
+  ${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_BINARY_DIR}/include/config.h
   @ONLY
 )
 
