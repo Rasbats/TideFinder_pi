@@ -12,26 +12,22 @@
 #include "tcmgr.h"
 #include <wx/wxchar.h>
 
-class Harmonics;
 class Dlg;
-
-//using namespace std;
-
 
 enum
 {
-      ID_TCWIN_NX,
-      ID_TCWIN_PR
+	ID_TCWIN_NX,
+	ID_TCWIN_PR
 };
 
 enum
 {
-            FORWARD_ONE_HOUR_STEP    =3600,
-            FORWARD_TEN_MINUTES_STEP =600,
-            FORWARD_ONE_MINUTES_STEP =60,
-            BACKWARD_ONE_HOUR_STEP    =-3600,
-            BACKWARD_TEN_MINUTES_STEP =-600,
-            BACKWARD_ONE_MINUTES_STEP =-60
+	FORWARD_ONE_HOUR_STEP = 3600,
+	FORWARD_TEN_MINUTES_STEP = 600,
+	FORWARD_ONE_MINUTES_STEP = 60,
+	BACKWARD_ONE_HOUR_STEP = -3600,
+	BACKWARD_TEN_MINUTES_STEP = -600,
+	BACKWARD_ONE_MINUTES_STEP = -60
 };
 
 enum
@@ -70,8 +66,7 @@ TCWin::TCWin( wxWindow * parent, int x, int y, int PortNo, wxString PortName, in
     //    This way, any window decorations set by external themes, etc
     //    will not detract from night-vision
 	long wstyle = wxCLIP_CHILDREN | wxDEFAULT_DIALOG_STYLE|wxSIMPLE_BORDER ;
-
-   
+ 
     wxDialog::Create( parent, wxID_ANY, wxString( _T ( "test" ) ), wxPoint( x, y ),
                       wxSize( 550, 480 ), wstyle );
 
@@ -81,7 +76,7 @@ TCWin::TCWin( wxWindow * parent, int x, int y, int PortNo, wxString PortName, in
 
 
     SetTitle( wxString( _( "Tide Finder" ) ) );
-	 m_plot_type = TIDE_PLOT;
+	m_plot_type = TIDE_PLOT;
 
 
     int sx, sy;
@@ -212,7 +207,6 @@ TCWin::TCWin( wxWindow * parent, int x, int y, int PortNo, wxString PortName, in
    m_ptextctrl->SetFont( *pVLFont );
    m_ptextctrl->SetForegroundColour(c_black1);
    m_ptextctrl->SetBackgroundColour(c_blue);
-   //m_ptextctrl->SetLabel(wxT("DOVER"));
 
 }
 
@@ -505,7 +499,7 @@ void TCWin::OnPaint( wxPaintEvent& event )
 			}
 
 			if (mtz.Len()) {
-				if (m_graphday.IsDST()) mtz[1] = 'D';
+				if (m_graphday.IsDST()) mtz = 'D';
 
 				m_stz = mtz;
 			}
