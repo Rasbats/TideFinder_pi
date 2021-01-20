@@ -109,7 +109,7 @@ string(REGEX REPLACE "\([0-9]\)\.\([0-9]\).*" "ov\\1\\2"
 
 if (TIDEFINDER_USE_SVG)
   add_definitions(-DTIDEFINDER_USE_SVG)
-endif
+endif ()
 
 # Set up targets. Targets sets up a recursive call with BUILD_TYPE set to
 # 'flatpak', 'pkg' or 'tarball'. The initial call without BUILD_TYPE ends
