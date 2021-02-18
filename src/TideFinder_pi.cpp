@@ -73,7 +73,7 @@ TideFinder_pi::TideFinder_pi(void *ppimgr)
 
 	wxFileName fn;
 
-	auto path = GetPluginDataDir("TideFinder_pi");
+	wxString path = GetPluginDataDir("TideFinder_pi");
 	fn.SetPath(path);
 	fn.AppendDir("data");
 	fn.SetFullName("tidefinder_panel_icon.png");
