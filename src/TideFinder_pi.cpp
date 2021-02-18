@@ -34,8 +34,6 @@
 #include "TideFinder_pi.h"
 #include "TideFindergui_impl.h"
 #include "TideFindergui.h"
-#include "ocpn_plugin.h" 
-
 
 class TideFinder_pi;
 

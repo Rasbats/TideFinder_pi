@@ -40,6 +40,8 @@
 #include "ocpn_plugin.h" //Required for OCPN plugin functions
 #include "TideFindergui_impl.h"
 
+#include "config.h"
+
 class Dlg;
 
 //----------------------------------------------------------------------------------------------------------
