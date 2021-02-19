@@ -121,17 +121,17 @@ int TideFinder_pi::Init(void)
 
 #ifdef TIDEFINDER_USE_SVG
 	  m_leftclick_tool_id = InsertPlugInToolSVG(_T("TideFinder"), _svg_tidefinder, _svg_tidefinder, _svg_tidefinder_toggled,
-		  wxITEM_CHECK, _("Tide Finder"), _T(""), NULL, TIDEFINDER_TOOL_POSITION, 0, this);
+		  wxITEM_CHECK, _("TideFinder"), _T(""), NULL, TIDEFINDER_TOOL_POSITION, 0, this);
 
 #else
 	  m_leftclick_tool_id = InsertPlugInTool(_T(""), _img_tf, _img_tf, wxITEM_NORMAL,
-		  _("Tide Finder"), _T(""), NULL,
+		  _("TideFinder"), _T(""), NULL,
 		  TIDEFINDER_TOOL_POSITION, 0, this);
 #endif
       
 	wxMenu dummy_menu;
     m_position_menu_id = AddCanvasContextMenuItem
-          (new wxMenuItem(&dummy_menu, -1, _("Tide Finder Position")), this );
+          (new wxMenuItem(&dummy_menu, -1, _("TideFinder Position")), this );
     SetCanvasContextMenuItemViz(m_position_menu_id, true);
 
 	
@@ -201,13 +201,13 @@ wxBitmap *TideFinder_pi::GetPlugInBitmap()
 
 wxString TideFinder_pi::GetCommonName()
 {
-      return _("Tide Finder");
+      return _("TideFinder");
 }
 
 
 wxString TideFinder_pi::GetShortDescription()
 {
-      return _("Tide Finder Plugin");
+      return _("TideFinder Plugin");
 }
 
 wxString TideFinder_pi::GetLongDescription()
