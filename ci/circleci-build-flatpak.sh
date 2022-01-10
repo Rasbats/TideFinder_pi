@@ -3,62 +3,73 @@
 #
 # Build the flatpak artifacts.
 #
+
+# Copyright (c) 2021 Alec Leamas
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+
 set -e
+
 
 MANIFEST=$(cd flatpak; ls org.opencpn.OpenCPN.Plugin*yaml)
 echo "Using manifest file: $MANIFEST"
 set -x
 
-# Give the apt update daemons a chance to leave the scene while we build.
-sudo systemctl stop apt-daily.service apt-daily.timer
-sudo systemctl kill --kill-who=all apt-daily.service apt-daily-upgrade.service
-sudo systemctl mask apt-daily.service apt-daily-upgrade.service
-sudo systemctl daemon-reload
+# Load local environment if it exists i. e., this is a local build
+if [ -f ~/.config/local-build.rc ]; then source ~/.config/local-build.rc; fi
+if [ -d /ci-source ]; then cd /ci-source; fi
 
-# Install the flatpak PPA so we can access a usable flatpak version
-# (not available on Ubuntu Xenial 16.04, the VM this runs on)
-sudo add-apt-repository -y ppa:alexlarsson/flatpak
-wget -q -O - https://dl.google.com/linux/linux_signing_key.pub \
-    | sudo apt-key add -
-sudo apt update
+# Set up build directory and a visible link in /
+builddir=build-flatpak
+test -d $builddir || sudo mkdir $builddir && sudo rm -rf $builddir/*
+sudo chmod 777 $builddir
+if [ "$PWD" != "/"  ]; then sudo ln -sf $PWD/$builddir /$builddir; fi
 
-# Install the dependencies: openpcn and the flatpak SDK.
-sudo apt install build-essential flatpak-builder flatpak tar
-flatpak remote-add --user --if-not-exists flathub \
-    https://flathub.org/repo/flathub.flatpakrepo
-flatpak install --user -y flathub org.opencpn.OpenCPN > /dev/null
-flatpak install --user -y flathub org.freedesktop.Sdk//18.08  >/dev/null
+# Create a log file.
+exec > >(tee $builddir/build.log) 2>&1
 
-# Patch the runtime version so it matches the nightly builds'
-sed -i '/^runtime-version/s/:.*/: stable/' flatpak/$MANIFEST
+if [ -n "$TRAVIS_BUILD_DIR" ]; then cd $TRAVIS_BUILD_DIR; fi
+
+if [ -n "$CI" ]; then
+    sudo apt update
+
+    # Avoid using outdated TLS certificates, see #210.
+    sudo apt install --reinstall  ca-certificates
+
+    # Install flatpak and flatpak-builder
+    sudo apt install flatpak flatpak-builder
+fi
+
+flatpak remote-add --user --if-not-exists \
+    flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+flatpak install --user -y --noninteractive \
+    flathub org.freedesktop.Sdk//20.08
+
+flatpak install --user -y --or-update --noninteractive \
+    flathub  org.opencpn.OpenCPN
 
 # The flatpak checksumming needs python3:
-pyenv local $(pyenv versions | sed 's/*//' | awk '{print $1}' | tail -1)
-cp .python-version $HOME
-
-# Install a recent python, flatpak's is too old.
-export PATH=$HOME/.local/bin:$PATH
-python -m pip install --user cmake
+if ! python3 --version 2>&1 >/dev/null; then
+    pyenv local $(pyenv versions | sed 's/*//' | awk '{print $1}' | tail -1)
+    cp .python-version $HOME
+fi
 
 # Configure and build the plugin tarball and metadata.
-mkdir build; cd build
+cd $builddir
 cmake -DCMAKE_BUILD_TYPE=Release ..
 make -j $(nproc) VERBOSE=1 flatpak
 
-# Restore patched file so the cache checksumming is ok.
-git checkout ../flatpak/$MANIFEST
+# Restore permissions and owner in build tree.
+if [ -d /ci-source ]; then sudo chown --reference=/ci-source -R . ../cache; fi
+sudo chown --reference=.. .
 
-# Wait for apt-daily to complete. apt-daily should not restart, it's masked.
-# https://unix.stackexchange.com/questions/315502
-echo -n "Waiting for apt_daily lock..."
-sudo flock /var/lib/apt/daily_lock echo done
-
-# Install cloudsmith, requiered by upload script
-python3 -m pip install --user --upgrade pip
-python3 -m pip install --user cloudsmith-cli
-
-# Required by git-push
-python3 -m pip install --user cryptography
+# Install cloudsmith and cryptography, required by upload script and git-push
+python3 -m pip install -q --user --upgrade pip
+python3 -m pip install -q --user cloudsmith-cli cryptography
 
 # python install scripts in ~/.local/bin, teach upload.sh to use this in PATH
 echo 'export PATH=$PATH:$HOME/.local/bin' >> ~/.uploadrc
