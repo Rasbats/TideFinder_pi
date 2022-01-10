@@ -1,4 +1,14 @@
-# Set ARCH using cmake probes and various heuristics.
+# ~~~
+# Summary:      Set ARCH using cmake probes and various heuristics.
+# License:      GPLv3+
+# Copyright (c) 2021 Alec Leamas
+# ~~~
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+
 
 if (COMMAND GetArch)
   return()
@@ -21,7 +31,11 @@ function (GetArch)
     else (CMAKE_SYSTEM_PROCESSOR MATCHES "arm*")
       set(ARCH ${CMAKE_SYSTEM_PROCESSOR})
     endif ()
-    if (EXISTS /etc/redhat-release)
+    if ("${BUILD_TYPE}" STREQUAL "flatpak")
+      if (ARCH STREQUAL "arm64")
+        set(ARCH "aarch64")
+      endif ()
+    elseif (EXISTS /etc/redhat-release)
       if (ARCH STREQUAL "arm64")
         set(ARCH "aarch64")
       endif ()
