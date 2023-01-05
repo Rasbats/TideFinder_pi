@@ -13,7 +13,7 @@ function usage() {
     cat << EOT
 Usage:
     update-templates [-T]  <treeish>
-    update-templates [-h | -l]
+    update-templates [-h |-l]
 
 
 Parameters:
@@ -28,7 +28,7 @@ Options:
 
 Examples:
     update-templates -l                   -- List available tags
-    update-templates sd3.0.1              -- Update from sd3.0.1 tag
+    update-templates sd3.0.2              -- Update from sd3.0.2 tag
     update-templates shipdriver/v3.0      -- Update from v3.0 release branch
     update-templates shipdriver/master    -- Update from development branch
 EOT
@@ -140,23 +140,16 @@ for dir in cmake ci scripts buildwin; do
     update_dir $dir $source_treeish
 done
 
-echo "Updating libs"
-git checkout $source_treeish libs
-git add libs
-git diff-index --quiet --cached HEAD -- || {
-    git commit -m "Templates: Updating libs"
-}
-
 # If Plugin.cmake exists we should also update CMakeLists.txt
 if [ -f Plugin.cmake ]; then CMakeLists=CMakeLists.txt; fi
 
 echo "Templates: Updating other files"
 for f in \
     appveyor.yml \
+    Changelog.md \
     .circleci \
     .clang-format \
     .cmake-format.yaml \
-    .drone.yml \
     .gitattributes \
     .gitignore \
     INSTALL.md \
@@ -170,8 +163,45 @@ do
     git checkout $source_treeish $f
     git add $f || git add --renormalize $f
 done
-
 git commit -m "Templates: Updating other files"
+
+# Handle opencpn-libs submodule
+test -d opencpn-libs || \
+    git submodule add https://github.com/leamas/opencpn-libs.git opencpn-libs
+git submodule update --remote --merge opencpn-libs
+git add opencpn-libs
+git diff-index --quiet --cached HEAD -- || {
+    echo "Updating opencpn-libs submodule"
+    git commit -m "opencpn-libs: Update to latest version."
+}
+
+# Update flatpak runtime version as required:
+sed -i \
+    -e '/sdk: org.freedesktop.Sdk/s/20.08/22.08/' \
+    -e '/^runtime-version:/s/:.*/: beta/' \
+  flatpak/org.opencpn.OpenCPN.Plugin.*.yaml
+git add flatpak
+git diff-index --quiet --cached HEAD -- || {
+    echo "Updating Updating flatpak runtime version to 22.08"
+    git commit -m "opencpn-libs: Update to latest version."
+}
+
+# Check for files/dirs which are private, but should be copied on first run.
+for f in  \
+    config.h.in \
+    build-deps \
+    build-conf.rc \
+    libs \
+    build-deps/macos-cache-stamp \
+    build-deps/0001-matrix.h-Patch-attributes-handling-wxwidgets-22790.patch
+do
+    if test -e $f; then continue; fi
+    git checkout $source_treeish $f
+done
+git diff-index --quiet --cached HEAD -- || {
+    echo "Adding initial versions of private data"
+    git commit -m "Adding initial versions of private data"
+}
 
 if [ -e update-ignored ]; then
     echo "Revert changes in blacklisted files."
@@ -180,14 +210,13 @@ if [ -e update-ignored ]; then
     done
 fi
 
-for f in buildosx buildwin/NSIS* libs/AndroidLibs.cmake mingw; do
+for f in buildosx buildwin/NSIS* libs/AndroidLibs.cmake mingw .drone.yml; do
     if test -e $f; then git rm -rf $f; fi
 done
 git diff-index --quiet --cached HEAD -- || {
     echo "Removing unused files"
     git commit -am "Templates: Removing obsoleted and unused files."
 }
-
 
 if [ -f cmake/TemplateVersion ]; then
     our_manifest=$(echo flatpak/org.opencpn.OpenCPN.Plugin.*.yaml)
@@ -214,9 +243,8 @@ git commit -m "cmake: Update TemplateVersion to $commit"
 cat << EOF
 
 
-Shipdriver templates has been updated. To review changes made:
+Shipdriver templates has been updated. Please review Changelog.md for info
+about changes in last release.
 
-    $ git log --oneline -5
-
-See UPDATE_TEMPLATES.md for more.
+See UPDATE_TEMPLATES.md for more info.
 EOF
